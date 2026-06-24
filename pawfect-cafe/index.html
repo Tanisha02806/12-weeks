@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pawfect Café</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="icon" href="assets/icons/paw-icon.png" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- =========================
+       HEADER / NAVBAR
+  ========================== -->
+  <header class="site-header">
+    <div class="container navbar">
+        <div class="logo">
+        <span class="logo-icon">🐾</span>
+        <span class="logo-text">Pawfect Café</span>
+        </div>
+
+        <!-- HAMBURGER BUTTON -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+        </button>
+
+        <!-- NAVIGATION -->
+        <div class="nav-wrapper" id="navWrapper">
+        <nav class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#about">About</a>
+            <a href="#pets">Pets</a>
+            <a href="#menu">Menu</a>
+            <a href="#events">Events</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <a href="#contact" class="btn btn-primary nav-btn">Book a Visit</a>
+        </div>
+    </div>
+    </header>
+
+  <!-- =========================
+       MAIN
+  ========================== -->
+  <main>
+
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
+    <section class="hero-section" id="hero">
+      <div class="container hero">
+
+        <!-- LEFT CONTENT -->
+        <div class="hero-content">
+          <span class="hero-badge">☕ Cozy pet café in town</span>
+
+          <h1>
+            Sip coffee, meet fluffy friends, and feel right at home.
+          </h1>
+
+          <p>
+            Pawfect Café is a warm little corner filled with sweet treats,
+            rescue pets, cozy seating, and happy weekend vibes. Come cuddle,
+            relax, and make your day a little softer.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#contact" class="btn btn-primary">Book a Visit</a>
+            <a href="#pets" class="btn btn-secondary">Meet Our Pets</a>
+          </div>
+
+          <div class="hero-features">
+            <div class="feature-card">
+              <span>🐱</span>
+              <p>Friendly rescue pets</p>
+            </div>
+
+            <div class="feature-card">
+              <span>🧁</span>
+              <p>Fresh café treats daily</p>
+            </div>
+
+            <div class="feature-card">
+              <span>💗</span>
+              <p>Cozy and calm atmosphere</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT VISUAL -->
+        <div class="hero-visual">
+          <div class="hero-image-card">
+            <div class="hero-image-top">
+              <span class="tag">Best Seller</span>
+              <span class="rating">⭐ 4.9</span>
+            </div>
+
+            <img
+              src="https://images.unsplash.com/photo-1511044568932-338cba0ad803?auto=format&fit=crop&w=900&q=80"
+              alt="Cute café cat"
+            />
+
+            <div class="hero-image-bottom">
+              <h3>Mochi’s Favorite Corner</h3>
+              <p>Fresh pastries, warm coffee, and endless cat cuddles.</p>
+            </div>
+          </div>
+
+          <div class="floating-card floating-card-1">
+            <span>🐾 12 rescue pets</span>
+          </div>
+
+          <div class="floating-card floating-card-2">
+            <span>☕ Open daily 9AM – 9PM</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="about-section" id="about">
+        <div class="container about">
+
+            <!-- LEFT CONTENT -->
+            <div class="about-content">
+            <span class="section-badge">About Us</span>
+            <h2>A cozy little café where coffee, comfort, and rescue pets come together.</h2>
+            <p>
+                Pawfect Café is a calm, happy corner designed for slow mornings, warm drinks,
+                sweet desserts, and time spent with lovable rescue pets. Whether you’re here
+                for a latte, a cuddle session, or a peaceful place to unwind, we want every
+                visit to feel soft, welcoming, and full of tiny joyful moments.
+            </p>
+
+            <div class="about-highlights">
+                <div class="highlight-pill">🐾 Rescue-friendly space</div>
+                <div class="highlight-pill">☕ Fresh drinks & desserts</div>
+                <div class="highlight-pill">💗 Calm cozy seating</div>
+                <div class="highlight-pill">🎉 Weekend pet events</div>
+            </div>
+            </div>
+
+            <!-- RIGHT CONTENT -->
+            <div class="about-cards">
+            <div class="about-card large-card">
+                <span class="about-card-icon">🏡</span>
+                <h3>Warm & Peaceful Atmosphere</h3>
+                <p>
+                Soft music, cozy seating, pastel corners, and lots of furry company make
+                every visit feel relaxing and special.
+                </p>
+            </div>
+
+            <div class="about-card-row">
+                <div class="about-card small-card">
+                <span class="about-card-icon">🐱</span>
+                <h3>12 Rescue Pets</h3>
+                <p>Cats and dogs with unique personalities waiting to brighten your day.</p>
+                </div>
+
+                <div class="about-card small-card">
+                <span class="about-card-icon">🧁</span>
+                <h3>Signature Treats</h3>
+                <p>Fresh pastries, themed desserts, and café specials served daily.</p>
+                </div>
+            </div>
+            </div>
+
+        </div>
+        </section>
+
+    <section class="pets-section" id="pets">
+        <div class="container">
+
+            <!-- SECTION HEADING -->
+            <div class="section-heading">
+            <span class="section-badge">Meet Our Café Friends</span>
+            <h2>Fluffy little stars you’ll fall in love with.</h2>
+            <p>
+                Every pet at Pawfect Café has a tiny personality of their own — from sleepy
+                cuddle bugs to playful chaos gremlins. Here are a few of our regular favorites.
+            </p>
+            </div>
+
+            <!-- PET GRID -->
+            <div class="pets-grid">
+
+            <!-- CARD 1 -->
+            <article class="pet-card">
+                <div class="pet-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1519052537078-e6302a4968d4?auto=format&fit=crop&w=900&q=80"
+                    alt="Mochi the cat"
+                />
+                <span class="pet-tag">Sleepy Cat</span>
+                </div>
+
+                <div class="pet-card-content">
+                <div class="pet-title-row">
+                    <h3>Mochi</h3>
+                    <span class="pet-age">2 yrs</span>
+                </div>
+                <p>
+                    Loves window naps, warm laps, and pretending she owns the café.
+                </p>
+                <div class="pet-extra">
+                    <span>🤍 Favorite: vanilla cream</span>
+                </div>
+                </div>
+            </article>
+
+            <!-- CARD 2 -->
+            <article class="pet-card">
+                <div class="pet-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80"
+                    alt="Boba the puppy"
+                />
+                <span class="pet-tag">Playful Puppy</span>
+                </div>
+
+                <div class="pet-card-content">
+                <div class="pet-title-row">
+                    <h3>Boba</h3>
+                    <span class="pet-age">1 yr</span>
+                </div>
+                <p>
+                    Energetic, dramatic, and always ready to greet every new customer first.
+                </p>
+                <div class="pet-extra">
+                    <span>🦴 Favorite: peanut treats</span>
+                </div>
+                </div>
+            </article>
+
+            <!-- CARD 3 -->
+            <article class="pet-card">
+                <div class="pet-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=900&q=80"
+                    alt="Luna the kitten"
+                />
+                <span class="pet-tag">Shy Kitten</span>
+                </div>
+
+                <div class="pet-card-content">
+                <div class="pet-title-row">
+                    <h3>Luna</h3>
+                    <span class="pet-age">8 mo</span>
+                </div>
+                <p>
+                    Quiet at first, but once she trusts you, she’ll curl up beside you all day.
+                </p>
+                <div class="pet-extra">
+                    <span>🌙 Favorite: soft blankets</span>
+                </div>
+                </div>
+            </article>
+
+            <!-- CARD 4 -->
+            <article class="pet-card">
+                <div class="pet-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=900&q=80"
+                    alt="Toffee the dog"
+                />
+                <span class="pet-tag">Gentle Golden</span>
+                </div>
+
+                <div class="pet-card-content">
+                <div class="pet-title-row">
+                    <h3>Toffee</h3>
+                    <span class="pet-age">3 yrs</span>
+                </div>
+                <p>
+                    Sweet, calm, and the best café companion for anyone having a long day.
+                </p>
+                <div class="pet-extra">
+                    <span>☀️ Favorite: sun spots & biscuits</span>
+                </div>
+                </div>
+            </article>
+
+            </div>
+        </div>
+        </section>
+
+    <section class="menu-section" id="menu">
+        <div class="container">
+
+            <!-- SECTION HEADING -->
+            <div class="section-heading">
+            <span class="section-badge">Café Menu</span>
+            <h2>Sweet little treats and cozy drinks made to match the vibe.</h2>
+            <p>
+                From creamy lattes to playful desserts, our menu is designed to feel warm,
+                soft, and a little magical — just like the café itself.
+            </p>
+            </div>
+
+            <!-- MENU GRID -->
+            <div class="menu-grid">
+
+            <!-- ITEM 1 -->
+            <article class="menu-card">
+                <div class="menu-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=900&q=80"
+                    alt="Strawberry cloud latte"
+                />
+                <span class="menu-category">Drink</span>
+                </div>
+
+                <div class="menu-card-content">
+                <div class="menu-title-row">
+                    <h3>Strawberry Cloud Latte</h3>
+                    <span class="menu-price">$7.50</span>
+                </div>
+
+                <p>
+                    A creamy strawberry latte topped with soft foam and a tiny sprinkle of sweetness.
+                </p>
+
+                <div class="menu-meta">
+                    <span>🍓 Café Favorite</span>
+                    <span>Hot / Iced</span>
+                </div>
+                </div>
+            </article>
+
+            <!-- ITEM 2 -->
+            <article class="menu-card">
+                <div class="menu-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80"
+                    alt="Matcha paw cake"
+                />
+                <span class="menu-category">Dessert</span>
+                </div>
+
+                <div class="menu-card-content">
+                <div class="menu-title-row">
+                    <h3>Matcha Paw Cake</h3>
+                    <span class="menu-price">$8.20</span>
+                </div>
+
+                <p>
+                    Soft matcha sponge cake with a creamy center and a playful paw-shaped topping.
+                </p>
+
+                <div class="menu-meta">
+                    <span>🍵 Best Seller</span>
+                    <span>Fresh Daily</span>
+                </div>
+                </div>
+            </article>
+
+            <!-- ITEM 3 -->
+            <article class="menu-card">
+                <div class="menu-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=80"
+                    alt="Vanilla biscuit plate"
+                />
+                <span class="menu-category">Bakery</span>
+                </div>
+
+                <div class="menu-card-content">
+                <div class="menu-title-row">
+                    <h3>Vanilla Biscuit Basket</h3>
+                    <span class="menu-price">$6.80</span>
+                </div>
+
+                <p>
+                    Warm buttery biscuits served with vanilla cream and berry jam on the side.
+                </p>
+
+                <div class="menu-meta">
+                    <span>🧁 Soft & Sweet</span>
+                    <span>Pairs with tea</span>
+                </div>
+                </div>
+            </article>
+
+            <!-- ITEM 4 -->
+            <article class="menu-card">
+                <div class="menu-image-wrap">
+                <img
+                    src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=80"
+                    alt="Hot chocolate"
+                />
+                <span class="menu-category">Drink</span>
+                </div>
+
+                <div class="menu-card-content">
+                <div class="menu-title-row">
+                    <h3>Midnight Hot Chocolate</h3>
+                    <span class="menu-price">$7.90</span>
+                </div>
+
+                <p>
+                    Rich hot chocolate with whipped cream, cocoa dust, and a warm cozy finish.
+                </p>
+
+                <div class="menu-meta">
+                    <span>🍫 Comfort Pick</span>
+                    <span>Winter Special</span>
+                </div>
+                </div>
+            </article>
+
+            </div>
+        </div>
+        </section>
+
+    <section class="events-section" id="events">
+        <div class="container">
+
+            <!-- SECTION HEADING -->
+            <div class="section-heading">
+            <span class="section-badge">Weekend Specials</span>
+            <h2>Little events made for pet cuddles, laughter, and soft café memories.</h2>
+            <p>
+                Join our themed weekends, adoption meetups, and cozy community sessions
+                designed to make every visit feel extra special.
+            </p>
+            </div>
+
+            <!-- EVENTS GRID -->
+            <div class="events-grid">
+
+            <!-- EVENT 1 -->
+            <article class="event-card">
+                <div class="event-top">
+                <span class="event-date">Sun · 12 Jul</span>
+                <span class="event-type">Cuddle Day</span>
+                </div>
+
+                <h3>Cat Cuddle Sunday</h3>
+                <p>
+                Spend a slow afternoon with our calmest café cats, soft music, and a free mini cookie with every drink.
+                </p>
+
+                <div class="event-info">
+                <span>⏰ 2:00 PM – 5:00 PM</span>
+                <span>📍 Lounge Corner</span>
+                </div>
+
+                <a href="#contact" class="event-btn">Reserve a Spot</a>
+            </article>
+
+            <!-- EVENT 2 -->
+            <article class="event-card">
+                <div class="event-top">
+                <span class="event-date">Sat · 18 Jul</span>
+                <span class="event-type">Adoption</span>
+                </div>
+
+                <h3>Paws & Adoption Day</h3>
+                <p>
+                Meet rescue pets looking for forever homes, talk to volunteers, and enjoy a gentle café afternoon together.
+                </p>
+
+                <div class="event-info">
+                <span>⏰ 11:00 AM – 4:00 PM</span>
+                <span>📍 Main Hall</span>
+                </div>
+
+                <a href="#contact" class="event-btn">Join the Event</a>
+            </article>
+
+            <!-- EVENT 3 -->
+            <article class="event-card">
+                <div class="event-top">
+                <span class="event-date">Fri · 24 Jul</span>
+                <span class="event-type">Workshop</span>
+                </div>
+
+                <h3>Paint & Paws Evening</h3>
+                <p>
+                A cozy creative session with guided painting, warm drinks, and playful pets wandering around your table.
+                </p>
+
+                <div class="event-info">
+                <span>⏰ 6:30 PM – 8:30 PM</span>
+                <span>📍 Studio Nook</span>
+                </div>
+
+                <a href="#contact" class="event-btn">Save My Seat</a>
+            </article>
+
+            </div>
+        </div>
+        </section>
+
+    <section class="contact-section" id="contact">
+        <div class="container contact-wrapper">
+
+            <!-- LEFT SIDE -->
+            <div class="contact-info">
+            <span class="section-badge">Book a Visit</span>
+            <h2>Reserve a cozy little café moment with your favorite furry friends.</h2>
+            <p>
+                Planning a quiet coffee date, a weekend cuddle session, or a special pet-themed
+                outing? Send us a booking request and we’ll help you find the sweetest time to visit.
+            </p>
+
+            <div class="contact-cards">
+                <div class="contact-mini-card">
+                <span class="contact-icon">🕒</span>
+                <div>
+                    <h3>Opening Hours</h3>
+                    <p>Mon – Sun · 9:00 AM – 9:00 PM</p>
+                </div>
+                </div>
+
+                <div class="contact-mini-card">
+                <span class="contact-icon">📍</span>
+                <div>
+                    <h3>Location</h3>
+                    <p>12 Blossom Street, Cozy Town</p>
+                </div>
+                </div>
+
+                <div class="contact-mini-card">
+                <span class="contact-icon">✉️</span>
+                <div>
+                    <h3>Email Us</h3>
+                    <p>hello@pawfectcafe.com</p>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="contact-form-card">
+            <h3>Send a Reservation Request</h3>
+            <p class="form-subtext">
+                Fill in your details and we’ll get back to you with the cutest table available.
+            </p>
+
+            <form class="reservation-form">
+                <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" />
+                </div>
+                </div>
+
+                <div class="form-row">
+                <div class="form-group">
+                    <label for="guests">Number of Guests</label>
+                    <input type="number" id="guests" placeholder="e.g. 2" />
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Visit Date</label>
+                    <input type="date" id="date" />
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label for="message">Special Note</label>
+                <textarea
+                    id="message"
+                    rows="5"
+                    placeholder="Tell us if you’d like a birthday setup, quiet corner, or just extra Mochi time..."
+                ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary form-btn">
+                Send Request
+                </button>
+            </form>
+            </div>
+
+        </div>
+        </section>
+
+    </main>
+
+    <!-- =========================
+        FOOTER
+    ========================== -->
+    <footer class="site-footer">
+        <div class="container footer-wrapper">
+
+        <div class="footer-column footer-brand">
+            <div class="logo footer-logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text">Pawfect Café</span>
+            </div>
+            <p>
+            A warm little pet café for coffee lovers, dessert dreamers, and anyone who
+            needs a soft cozy moment with fluffy friends.
+            </p>
+        </div>
+
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#pets">Pets</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Contact</h3>
+            <ul>
+            <li>hello@pawfectcafe.com</li>
+            <li>12 Blossom Street, Cozy Town</li>
+            <li>Mon – Sun · 9AM – 9PM</li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Follow Us</h3>
+            <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Pinterest</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">TikTok</a></li>
+            </ul>
+        </div>
+
+        </div>
+
+        <div class="footer-bottom">
+        <div class="container">
+            <p>© 2026 Pawfect Café. Made with coffee, cuddles, and pastel chaos.</p>
+        </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
