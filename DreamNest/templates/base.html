@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}DreamNest{% endblock %}</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+
+            <div class="logo">
+                DreamNest
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/upload">Upload</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+
+        </nav>
+
+        <!-- Main Content -->
+        <main>
+
+            {% block content %}
+            {% endblock %}
+        
+        </main>
+
+        <!-- Footer -->
+
+        <footer>
+
+            <p>Made with love using Flask & Scikit-Learn</p>
+        
+        </footer>
+    </body>
+</html>

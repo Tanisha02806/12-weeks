@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pipeline | DreamNest
+{% endblock %}
+
+{% block content %}
+
+<section class="pipeline-header">
+
+    <h1>⚙️ Machine Learning Pipeline</h1>
+
+    <p>
+        Every dataset must go through preprocessing before it can
+        be used to train a machine learning model.
+    </p>
+
+</section>
+
+<section class="pipeline-container">
+
+    <div class="pipeline-step">
+        <div class="step-icon">📄</div>
+        <h2>Dataset</h2>
+        <p>Load the raw housing dataset.</p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="pipeline-step">
+        <div class="step-icon">🧹</div>
+        <h2>Cleaning</h2>
+        <p>Handle missing values and remove inconsistencies.</p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="pipeline-step">
+        <div class="step-icon">🔤</div>
+        <h2>Encoding</h2>
+        <p>Convert text categories into numerical values.</p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="pipeline-step">
+        <div class="step-icon">📏</div>
+        <h2>Scaling</h2>
+        <p>Normalize numerical features for better learning.</p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="pipeline-step">
+        <div class="step-icon">✂️</div>
+        <h2>Train/Test Split</h2>
+        <p>Split data into training and testing sets.</p>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="pipeline-step">
+        <div class="step-icon">⚙️</div>
+        <h2>Pipeline Ready</h2>
+        <p>Your dataset is now prepared for Machine Learning.</p>
+    </div>
+
+</section>
+
+{% endblock %}

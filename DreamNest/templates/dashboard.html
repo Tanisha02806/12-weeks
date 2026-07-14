@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | DreamNest
+{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-header">
+
+    <h1>🏡 DreamNest ML Pipeline</h1>
+
+    <p>
+
+        Upload, preprocess and prepare your housing dataset using a complete Machine Learning workflow.
+
+    </p>
+
+</section>
+
+<section class="dashboard-grid">
+
+    <!-- DATASET -->
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">📂</div>
+
+        <h2>Dataset</h2>
+
+        {% if dataset_loaded %}
+
+            <p><strong>{{ dataset_name }}</strong></p>
+
+            <p>Rows: {{ rows }}</p>
+
+            <p>Columns: {{ columns }}</p>
+
+            <p>Missing Values: {{ missing_values }}</p>
+
+            <span class="status completed">
+                Loaded
+            </span>
+
+        {% else %}
+
+            <p>No dataset uploaded.</p>
+
+            <span class="status pending">
+                Waiting
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <!-- CLEANING -->
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+
+            🧹
+
+        </div>
+
+        <h2>Cleaning</h2>
+
+        <p>
+
+            Handle missing values using
+            Median and Mode.
+
+        </p>
+
+        {% if cleaning %}
+
+            <p>
+
+                Missing Before
+
+                <strong>
+
+                    {{ missing_before }}
+
+                </strong>
+
+            </p>
+
+            <p>
+
+                Missing After
+
+                <strong>
+
+                    {{ missing_after }}
+
+                </strong>
+
+            </p>
+
+            <span class="status completed">
+
+                Completed
+
+            </span>
+
+        {% else %}
+
+            <form action="/run-cleaning" method="POST">
+
+                <button class="pipeline-btn">
+
+                    ▶ Run Cleaning
+
+                </button>
+
+            </form>
+
+        {% endif %}
+
+    </div>
+
+    <!-- ENCODING -->
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            🔤
+        </div>
+
+        <h2>Encoding</h2>
+
+        <p>
+            One-Hot Encode categorical features.
+        </p>
+
+        {% if encoding %}
+
+            <p>
+
+                Features Encoded
+
+                <strong>
+
+                    {{ encoded_features }}
+
+                </strong>
+
+            </p>
+
+            <span class="status completed">
+
+                Completed
+
+            </span>
+
+        {% elif cleaning %}
+
+            <form action="/run-encoding" method="POST">
+
+                <button class="pipeline-btn">
+
+                    ▶ Run Encoding
+
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <span class="status locked">
+
+                Locked
+
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <!-- SCALING -->
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+
+            📏
+
+        </div>
+
+        <h2>Scaling</h2>
+
+        <p>
+
+            Standardize numerical features.
+
+        </p>
+
+        {% if scaling %}
+
+            <p>
+
+                Features Scaled
+
+                <strong>
+
+                    {{ scaled_features }}
+
+                </strong>
+
+            </p>
+
+            <span class="status completed">
+
+                Completed
+
+            </span>
+
+        {% elif encoding %}
+
+            <form action="/run-scaling" method="POST">
+
+                <button class="pipeline-btn">
+
+                    ▶ Run Scaling
+
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <span class="status locked">
+
+                Locked
+
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <!-- SPLIT -->
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            ✂️
+        </div>
+
+        <h2>Train/Test Split</h2>
+
+        <p>
+            Split dataset into training and testing sets.
+        </p>
+
+        {% if splitting %}
+
+            <p>
+
+                <strong>Training Rows:</strong>
+
+                {{ train_rows }}
+
+            </p>
+
+            <p>
+
+                <strong>Testing Rows:</strong>
+
+                {{ test_rows }}
+
+            </p>
+
+            <span class="status completed">
+
+                Completed
+
+            </span>
+
+        {% elif scaling %}
+
+            <form action="/run-splitting" method="POST">
+
+                <button class="pipeline-btn">
+
+                    ▶ Run Train/Test Split
+
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <span class="status locked">
+
+                Locked
+
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <!-- PIPELINE -->
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-icon">
+            ⚙️
+        </div>
+
+        <h2>Pipeline</h2>
+
+        <p>
+
+            Scikit-Learn preprocessing pipeline.
+
+        </p>
+
+        {% if pipeline %}
+
+            <p>
+
+                Processed Rows
+
+                <strong>
+
+                    {{ pipeline_rows }}
+
+                </strong>
+
+            </p>
+
+            <p>
+
+                Processed Features
+
+                <strong>
+
+                    {{ pipeline_columns }}
+
+                </strong>
+
+            </p>
+
+            <span class="status completed">
+
+                Ready
+
+            </span>
+
+        {% elif splitting %}
+
+            <form action="/run-pipeline" method="POST">
+
+                <button class="pipeline-btn">
+
+                    ▶ Build Pipeline
+
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <span class="status locked">
+
+                Locked
+
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <!-- PROGRESS -->
+
+    <div class="dashboard-card summary-card">
+
+        <div class="dashboard-icon">📈</div>
+
+        <h2>Overall Progress</h2>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                style="width: {{ progress }}%;"
+            ></div>
+
+        </div>
+
+        <p class="progress-text">
+
+            {{ progress }}% Completed
+
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

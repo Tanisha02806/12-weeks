@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}
+Upload Dataset | DreamNest
+{% endblock %}
+
+{% block content %}
+
+<section class="upload-header">
+
+    <h1>📂 Upload Your Dataset</h1>
+
+    <p>
+        Upload your housing dataset (.csv) to begin the preprocessing pipeline.
+    </p>
+
+    {% if message %}
+    <div class="success-message">
+        {{ message }}
+    </div>
+    {% endif %}
+
+    {% if session.dataset_name %}
+    <div class="current-dataset">
+        <strong>Current Dataset:</strong>
+        {{ session.dataset_name }}
+    </div>
+    {% endif %}
+
+</section>
+
+<section class="upload-container">
+
+    <div class="upload-box">
+
+        <div class="upload-icon">
+            📄
+        </div>
+
+        <h2>Drag & Drop CSV Here</h2>
+
+        <p>or click below to browse</p>
+
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+
+            <input
+                type="file"
+                name="csvFile"
+                id="csvFile"
+                accept=".csv"
+                required
+            >
+
+            <br><br>
+
+            <button
+                type="submit"
+                class="btn upload-btn"
+            >
+                Upload Dataset
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<section class="dataset-info">
+
+    <h2>Dataset Information</h2>
+
+    <div class="info-cards">
+
+        <div class="info-card">
+            <h3>Rows</h3>
+            <p>{{ rows }}</p>
+        </div>
+
+        <div class="info-card">
+            <h3>Columns</h3>
+            <p>{{ columns }}</p>
+        </div>
+
+        <div class="info-card">
+            <h3>Missing Values</h3>
+            <p>{{ missing_values }}</p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="analysis-section">
+
+    <h2>Dataset Analysis</h2>
+
+    <div class="analysis-grid">
+
+        <div class="analysis-card">
+
+            <h3>🔢 Numerical Features</h3>
+
+            <p>{{ numerical_columns|length }}</p>
+
+        </div>
+
+        <div class="analysis-card">
+
+            <h3>🔤 Categorical Features</h3>
+
+            <p>{{ categorical_columns|length }}</p>
+
+        </div>
+
+        <div class="analysis-card">
+
+            <h3>🎯 Target Column</h3>
+
+            <p>
+                {% if target_column %}
+                    {{ target_column }}
+                {% else %}
+                    Not Found
+                {% endif %}
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="preview-section">
+
+    <h2>Dataset Preview</h2>
+
+    {% if headers %}
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                {% for header in headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for row in preview_data %}
+
+            <tr>
+
+                {% for value in row %}
+                <td>{{ value }}</td>
+                {% endfor %}
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <table>
+
+        <tr>
+
+            <td style="padding:30px; text-align:center;">
+                Upload a dataset to preview its contents.
+            </td>
+
+        </tr>
+
+    </table>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
