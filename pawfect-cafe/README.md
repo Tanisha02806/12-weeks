@@ -401,11 +401,6 @@ pawfect-cafe/
 ├── index.html
 ├── style.css
 ├── script.js
-│
-├── assets/
-│   ├── images/
-│   └── icons/
-│
 └── README.md
 ```
 
