@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CozyNest - AI House Price Predictor</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link
+        rel="icon"
+        tyle="image/png"
+        href="{{ url_for('static', filename='image/hero-house.png') }}">
+
+</head>
+
+<body>
+
+    <!-- Decorative Background Shapes -->
+
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <!-- ==========================
+            NAVIGATION
+    =========================== -->
+
+    <header>
+
+        <nav class="navbar">
+
+            <div class="logo">
+
+                CozyNest
+
+            </div>
+
+            <ul class="nav-links">
+
+                <li><a href="#">Home</a></li>
+
+                <li><a href="#about">About</a></li>
+
+                <li><a href="#predict">Predict</a></li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ==========================
+            HERO SECTION
+    =========================== -->
+
+    <section class="hero fade-in">
+
+        <div class="hero-text">
+
+            <h1>
+
+                Find Your Dream Home's
+                Estimated Value
+
+            </h1>
+
+            <p>
+
+                CozyNest uses Machine Learning to estimate
+                house prices instantly based on your
+                property's features.
+
+            </p>
+
+            <a href="#predict">
+
+                <button>
+
+                    Get Started
+
+                </button>
+
+            </a>
+
+        </div>
+
+        <div class="hero-image">
+
+            <img 
+                
+            src="{{ url_for('static', filename='images/hero-house.png') }}" 
+            
+            alt="Illustration of a cozy house used as the hero image for CozyNest">
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================
+        PREDICTION FORM
+    =========================== -->
+
+    <section class="prediction-section reveal" id="predict">
+
+        <div class="prediction-card glass-card">
+
+            <h2>House Details</h2>
+
+            <p>
+
+                Enter your property details to estimate
+                its market value.
+
+            </p>
+
+            <form 
+                id="predictionForm"
+                action="/predict" 
+                method="POST">
+
+                <div class="form-grid">
+
+                    <div class="input-group">
+
+                        <label for=area>
+                            
+                            Area (sq ft)
+                        
+                        </label>
+
+                        <input
+                            type="number"
+                            name="area"
+                            min="1"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for=bedrooms>
+                            
+                            Bedrooms
+                        
+                        </label>
+
+                        <input
+                            type="number"
+                            name="bedrooms"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for=bathrooms>
+                            
+                            Bathrooms
+                        
+                        </label>
+
+                        <input
+                            type="number"
+                            name="bathrooms"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for=stories>
+                            
+                            Stories
+                        
+                        </label>
+
+                        <input
+                            type="number"
+                            name="stories"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for=parking>
+                            
+                            Parking
+                        
+                        </label>
+
+                        <input
+                            type="number"
+                            name="parking"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>Main Road</label>
+
+                        <select name="mainroad">
+
+                            <option value="yes">Yes</option>
+
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>Guest Room</label>
+
+                        <select name="guestroom">
+
+                            <option value="yes">Yes</option>
+
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>Basement</label>
+
+                        <select name="basement">
+
+                            <option value="yes">Yes</option>
+
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>Hot Water Heating</label>
+
+                        <select name="hotwaterheating">
+
+                            <option value="yes">Yes</option>
+
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>Air Conditioning</label>
+
+                        <select name="airconditioning">
+
+                            <option value="yes">Yes</option>
+
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>Preferred Area</label>
+
+                        <select name="prefarea">
+
+                            <option value="yes">Yes</option>
+
+                            <option value="no">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>Furnishing Status</label>
+
+                        <select name="furnishingstatus">
+
+                            <option value="furnished">
+
+                                Furnished
+
+                            </option>
+
+                            <option value="semi-furnished">
+
+                                Semi-Furnished
+
+                            </option>
+
+                            <option value="unfurnished">
+
+                                Unfurnished
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <button
+                    id="predictButton"
+                    class="predict-btn"
+                    type="submit">
+
+                    <span id="buttonText">
+
+                        Predict Price
+
+                    </span>
+
+                    <span
+                        id="loadingSpinner"
+                        class="spinner">
+
+                </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================
+        PREDICTION RESULT
+    =========================== -->
+
+    {% if prediction %}
+
+    <section class="result-section reveal">
+
+        <div class="result-card glass-card">
+
+            <h2>
+
+                Estimated Property Value
+
+            </h2>
+
+            <h1>
+
+                ₹ {{ "{:,.2f}".format(prediction) }}
+
+            </h1>
+
+            <div class="price-tag">
+
+                {{ category }}
+
+            </div>
+
+            <div class=progress-container">
+
+                <div class="progress-bar"></div>
+
+            </div>
+
+            <p class="success-message">
+
+                Prediction generated successfully!
+
+            </p>
+
+            <div class="insight-box">
+
+                {% if category == "Luxury Home" %}
+
+                    Premium Property with excellent market value.
+                
+                {% elif category == "Mid-Range Home" %}
+
+                    Comfortable family home with balanced pricing.
+
+                {% else %}
+
+                    Affordable property with great value.
+
+                {% endif %}
+
+            </div>
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+
+                    <h4> Area </h4>
+
+                    <p>{{ user_input.area }} sq ft</p>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <h4>Bedrooms</h4>
+
+                    <p>{{ user_input.bedrooms }}</p>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <h4>Bathrooms</h4>
+
+                    <p>{{ user_input.bathrooms }}</p>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="predict-again-btn"
+                onclick="window.scrollTo({
+                    top:0,
+                    behavior:'smooth'
+                })">
+
+                Predict Again
+
+            </button>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+    <!-- ==========================
+            WHY COZYNEST
+    =========================== -->
+
+    <section class="about-section reveal" id="about">
+
+        <h2 class="section-title">
+
+            Why Choose CozyNest?
+
+        </h2>
+
+        <div class="about-grid">
+
+            <div class="about-card">
+
+                <h3>Accurate Predictions</h3>
+
+                <p>
+
+                    Our machine learning model estimates
+                    house prices using real property features
+                    to provide reliable predictions.
+
+                </p>
+
+            </div>
+
+            <div class="about-card">
+
+                <h3>Data-Driven</h3>
+
+                <p>
+
+                    Predictions are generated from trained
+                    regression models instead of fixed rules,
+                    helping users make informed decisions.
+
+                </p>
+
+            </div>
+
+            <div class="about-card">
+
+                <h3>Instant Results</h3>
+
+                <p>
+
+                    Enter your house details and receive an
+                    estimated market value within seconds.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================
+        MACHINE LEARNING MODELS
+    =========================== -->
+
+    <section class="models-section reveal">
+
+        <h2 class="section-title">
+
+            Machine Learning Models
+
+        </h2>
+
+        <div class="model-grid">
+
+            <div class="model-card">
+
+                <h3>Linear Regression</h3>
+
+                <p>
+
+                    Establishes a baseline by modelling the
+                    relationship between house features and
+                    price using a linear equation.
+
+                </p>
+
+            </div>
+
+            <div class="model-card">
+
+                <h3>Decision Tree</h3>
+
+                <p>
+
+                    Learns decision rules from the data and
+                    captures non-linear relationships between
+                    property features and price.
+
+                </p>
+
+            </div>
+
+            <div class="model-card featured-model">
+
+                <h3>Random Forest</h3>
+
+                <p>
+
+                    Combines multiple decision trees to improve
+                    prediction accuracy and reduce overfitting.
+                    This is the final model used in CozyNest.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================
+        ERROR MESSAGE
+    =========================== -->
+
+    {% if error %}
+
+    <div class="error-card">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+    <!-- ==========================
+            FOOTER
+    =========================== -->
+
+    <footer class="footer reveal">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <h2>CozyNest</h2>
+
+                <p>
+
+                    A Machine Learning powered house price prediction
+                    application built using Flask, Scikit-Learn and
+                    modern web technologies.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h3>Quick Links</h3>
+
+                <ul>
+
+                    <li><a href="#">Home</a></li>
+
+                    <li><a href="#predict">Predict</a></li>
+
+                    <li><a href="#about">About</a></li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="footer-tech">
+
+                <h3>Tech Stack</h3>
+
+                <ul>
+
+                    <li>Python</li>
+                    <li>Flask</li>
+                    <li>Scikit-Learn</li>
+                    <li>HTML • CSS • JavaScript</li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="footer-social">
+
+                <h3>Developer</h3>
+
+                <p>
+
+                    Built with ❤️ by Tanisha Thakur
+
+                </p>
+
+                <div class="social-buttons">
+
+                    <a
+                        href="https://github.com/Tanisha02806"
+                        target="_blank">
+
+                        GitHub
+
+                    </a>
+
+                    <a
+                        href="https://www.linkedin.com/"
+                        target="_blank">
+
+                        LinkedIn
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <p class="copyright">
+
+            © 2026 CozyNest • Machine Learning House Price Predictor
+
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
