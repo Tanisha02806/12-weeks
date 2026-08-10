@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Analysis Result | HireWise AI</title>
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/result.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="container navbar-container">
+
+            <a
+                href="/"
+                class="logo"
+            >
+                HireWise<span>AI</span>
+            </a>
+
+
+            <nav class="nav-links">
+
+                <a
+                    href="/"
+                    class="nav-link"
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="/predict"
+                    class="nav-link"
+                >
+                    Predict
+                </a>
+
+
+                <a
+                    href="/analytics"
+                    class="nav-link"
+                >
+                    Analytics
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-link"
+                >
+                    About
+                </a>
+
+            </nav>
+
+
+            <a
+                href="/predict"
+                class="nav-button"
+            >
+                New Analysis
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= RESULT ================= -->
+
+    <main>
+
+        <section class="result-page">
+
+            <div class="container">
+
+
+                <div class="result-heading">
+
+                    <span class="section-label">
+                        ANALYSIS COMPLETE
+                    </span>
+
+
+                    <h1>
+                        Employee Attrition Analysis
+                    </h1>
+
+
+                    <p>
+                        HireWise AI analyzed the submitted
+                        employee information using the trained
+                        classification model.
+                    </p>
+
+                </div>
+
+
+
+                <!-- RESULT CARD -->
+
+                <div
+                    class="result-card {{ result_class }}"
+                >
+
+
+                    <div class="result-card-content">
+
+
+                        <span class="result-label">
+                            PREDICTED OUTCOME
+                        </span>
+
+
+                        <h2>
+                            {{ result }}
+                        </h2>
+
+
+                        <p>
+                            Estimated probability of attrition
+                        </p>
+
+                        <div class="probability">
+                            {{ probability }}%
+                        </div>
+
+                        <p class="risk-message">
+                            {{ risk_message }}
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- EMPLOYEE SUMMARY -->
+
+                <div class="summary-card">
+
+
+                    <div class="summary-header">
+
+                        <h2>
+                            Employee Information
+                        </h2>
+
+                        <p>
+                            Values used for this prediction
+                        </p>
+
+                    </div>
+
+
+                    <div class="summary-grid">
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Age
+                            </span>
+
+                            <strong>
+                                {{ employee.age }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Business Travel
+                            </span>
+
+                            <strong>
+                                {{ employee.business_travel }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Job Role
+                            </span>
+
+                            <strong>
+                                {{ employee.job_role }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Job Satisfaction
+                            </span>
+
+                            <strong>
+                                {{ employee.job_satisfaction }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Monthly Income
+                            </span>
+
+                            <strong>
+                                {{ employee.monthly_income }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Previous Companies
+                            </span>
+
+                            <strong>
+                                {{ employee.num_companies_worked }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Overtime
+                            </span>
+
+                            <strong>
+                                {{ employee.over_time }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Environment Satisfaction
+                            </span>
+
+                            <strong>
+                                {{ employee.environment_satisfaction }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <span>
+                                Work-Life Balance
+                            </span>
+
+                            <strong>
+                                {{ employee.work_life_balance }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <!-- ================= FEATURE IMPORTANCE ================= -->
+
+                <div class="importance-card">
+
+                    <div class="importance-header">
+
+                        <span class="section-label">
+                            MODEL EXPLANATION
+                        </span>
+
+                        <h2>
+                            Important Model Features
+                        </h2>
+
+                        <p>
+                            These are the features the trained model found
+                            most useful when making its predictions.
+                        </p>
+
+                    </div>
+
+
+                    <div class="importance-list">
+
+                        {% for item in feature_importance %}
+
+                        <div class="importance-item">
+
+                            <div class="importance-info">
+
+                                <span class="importance-name">
+                                    {{ item["Display Feature"] }}
+                                </span>
+
+                                <span class="importance-value">
+                                    {{ "%.1f"|format(item["Importance"] * 100) }}%
+                                </span>
+
+                            </div>
+
+
+                            <div class="importance-bar">
+
+                                <div
+                                    class="importance-fill"
+                                    style="width: {{ item['Importance'] * 100 }}%;"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <!-- ================= MODEL INFORMATION ================= -->
+
+                <div class="model-info-card">
+
+                    <div class="model-info-header">
+
+                        <span class="section-label">
+                            MODEL DETAILS
+                        </span>
+
+                        <h2>
+                            How this prediction was generated
+                        </h2>
+
+                    </div>
+
+
+                    <div class="model-info-grid">
+
+
+                        <div class="model-info-item">
+
+                            <span>
+                                Model Used
+                            </span>
+
+                            <strong>
+                                {{ model_info["model_name"] }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="model-info-item">
+
+                            <span>
+                                Machine Learning Task
+                            </span>
+
+                            <strong>
+                                {{ model_info["task"] }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="model-info-item">
+
+                            <span>
+                                Prediction Target
+                            </span>
+
+                            <strong>
+                                {{ model_info["target"] }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p class="model-disclaimer">
+
+                        This prediction is generated from patterns learned
+                        from the training dataset. It should be treated as
+                        a decision-support signal rather than a definitive
+                        determination about an individual employee.
+
+                    </p>
+
+                </div>
+
+                <!-- ACTIONS -->
+
+                <div class="result-actions">
+
+
+                    <a
+                        href="/predict"
+                        class="primary-button"
+                    >
+                        Analyze Another Employee
+                    </a>
+
+
+                    <a
+                        href="/"
+                        class="secondary-button"
+                    >
+                        Back to Home
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container footer-container">
+
+
+            <div>
+
+                <a
+                    href="/"
+                    class="logo"
+                >
+                    HireWise<span>AI</span>
+                </a>
+
+
+                <p>
+                    Intelligent employee attrition
+                    analysis powered by machine learning.
+                </p>
+
+            </div>
+
+
+            <p class="copyright">
+                © 2026 HireWise AI
+            </p>
+
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

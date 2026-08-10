@@ -1,0 +1,365 @@
+/* ============================================================
+   RESULT PAGE
+   ============================================================ */
+
+.result-page {
+    padding: 80px 0;
+    min-height: calc(100vh - 160px);
+}
+
+
+.result-heading {
+    max-width: 720px;
+    margin: 0 auto 48px;
+    text-align: center;
+}
+
+
+.result-heading h1 {
+    margin: 12px 0 16px;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.result-heading p {
+    line-height: 1.7;
+    opacity: 0.75;
+}
+
+
+/* ============================================================
+   RESULT CARD
+   ============================================================ */
+
+.result-card {
+    max-width: 760px;
+    margin: 0 auto 32px;
+    padding: 48px;
+    border-radius: 24px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+
+.result-card.low-risk {
+    background: rgba(34, 197, 94, 0.08);
+}
+
+
+.result-card.high-risk {
+    background: rgba(239, 68, 68, 0.08);
+}
+
+
+.result-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    opacity: 0.6;
+}
+
+
+.result-card h2 {
+    margin: 12px 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 32px;
+}
+
+
+.result-card p {
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+
+.probability {
+    font-family: "Poppins", sans-serif;
+    font-size: 56px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   SUMMARY CARD
+   ============================================================ */
+
+.summary-card {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+}
+
+
+.summary-header {
+    margin-bottom: 28px;
+}
+
+
+.summary-header h2 {
+    margin-bottom: 6px;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.summary-header p {
+    opacity: 0.65;
+}
+
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+
+.summary-item {
+    padding: 20px;
+    background: white;
+}
+
+
+.summary-item span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+
+.summary-item strong {
+    font-size: 15px;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 36px;
+}
+
+
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .result-page {
+        padding: 50px 0;
+    }
+
+
+    .result-card {
+        padding: 32px 20px;
+    }
+
+
+    .result-card h2 {
+        font-size: 26px;
+    }
+
+
+    .probability {
+        font-size: 44px;
+    }
+
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+}
+
+/* ============================================================
+   FEATURE IMPORTANCE
+   ============================================================ */
+
+.importance-card {
+    max-width: 900px;
+    margin: 32px auto 0;
+    padding: 32px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+}
+
+
+.importance-header {
+    margin-bottom: 30px;
+}
+
+
+.importance-header h2 {
+    margin: 10px 0 8px;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.importance-header p {
+    max-width: 650px;
+    line-height: 1.6;
+    opacity: 0.65;
+}
+
+
+.importance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.importance-item {
+    width: 100%;
+}
+
+
+.importance-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 8px;
+}
+
+
+.importance-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.importance-value {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.65;
+}
+
+
+.importance-bar {
+    width: 100%;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+
+.importance-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+/* ============================================================
+   RISK MESSAGE
+   ============================================================ */
+
+.risk-message {
+    max-width: 600px;
+    margin: 20px auto 0;
+    line-height: 1.6;
+    opacity: 0.75;
+}
+
+
+/* ============================================================
+   MODEL INFORMATION
+   ============================================================ */
+
+.model-info-card {
+    max-width: 900px;
+    margin: 32px auto 0;
+    padding: 32px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+}
+
+
+.model-info-header {
+    margin-bottom: 28px;
+}
+
+
+.model-info-header h2 {
+    margin-top: 10px;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.model-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+
+.model-info-item {
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+
+.model-info-item span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+
+.model-info-item strong {
+    font-size: 15px;
+}
+
+
+.model-disclaimer {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 13px;
+    line-height: 1.7;
+    opacity: 0.6;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .model-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

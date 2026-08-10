@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>HireWise AI | Candidate Intelligence</title>
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+            rel="stylesheet"
+        >
+
+        <!-- Main CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/style.css') }}"
+        >
+    </head>
+
+    <body>
+
+        <!-- ================= NAVBAR ================= -->
+
+        <header class="navbar">
+
+            <div class="container navbar-container">
+
+                <a href="/" class="logo">
+                    HireWise<span>AI</span>
+                </a>
+
+                <nav class="nav-links">
+
+                    <a href="/" class="nav-link active">
+                        Home
+                    </a>
+
+                    <a href="/predict" class="nav-link">
+                        Predict
+                    </a>
+
+                    <a href="#" class="nav-link">
+                        Analytics
+                    </a>
+
+                    <a href="#" class="nav-link">
+                        About
+                    </a>
+
+                </nav>
+
+                <a href="/predict" class="nav-button">
+                    Start Screening
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= HERO ================= -->
+
+        <main>
+
+            <section class="hero">
+
+                <div class="container hero-container">
+
+                    <div class="hero-content">
+
+                        <div class="hero-badge">
+                            <span class="badge-dot"></span>
+                            Machine Learning Powered
+                        </div>
+
+                        <h1>
+                            Smarter hiring.
+                            <span>Better decisions.</span>
+                        </h1>
+
+                        <p>
+                            HireWise AI uses classification models to analyze
+                            candidate profiles and help recruiters identify
+                            promising candidates faster.
+                        </p>
+
+                        <div class="hero-actions">
+
+                            <a href="/predict" class="primary-button">
+                                Start Screening
+                            </a>
+
+                            <a href="#how-it-works" class="secondary-button">
+                                How It Works
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-visual">
+
+                        <div class="prediction-card">
+
+                            <div class="card-header">
+
+                                <div>
+                                    <p class="card-label">
+                                        Candidate Analysis
+                                    </p>
+
+                                    <h3>
+                                        Candidate #1042
+                                    </h3>
+                                </div>
+
+                                <div class="status-badge">
+                                    High Match
+                                </div>
+
+                            </div>
+
+
+                            <div class="confidence">
+
+                                <div class="confidence-header">
+                                    <span>Shortlist Probability</span>
+                                    <strong>91%</strong>
+                                </div>
+
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="candidate-factors">
+
+                                <div class="factor">
+                                    <span>Experience</span>
+                                    <strong>Strong</strong>
+                                </div>
+
+                                <div class="factor">
+                                    <span>Technical Skills</span>
+                                    <strong>Excellent</strong>
+                                </div>
+
+                                <div class="factor">
+                                    <span>Interview Score</span>
+                                    <strong>87 / 100</strong>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= FEATURES ================= -->
+
+            <section class="features">
+
+                <div class="container">
+
+                    <div class="section-heading">
+
+                        <span class="section-label">
+                            PLATFORM
+                        </span>
+
+                        <h2>
+                            Built around intelligent classification
+                        </h2>
+
+                        <p>
+                            HireWise combines machine learning with
+                            understandable candidate insights.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-grid">
+
+                        <article class="feature-card">
+
+                            <div class="feature-icon">
+                                LR
+                            </div>
+
+                            <h3>
+                                Multiple Models
+                            </h3>
+
+                            <p>
+                                Compare Logistic Regression,
+                                Decision Tree and Random Forest models.
+                            </p>
+
+                        </article>
+
+
+                        <article class="feature-card">
+
+                            <div class="feature-icon">
+                                AI
+                            </div>
+
+                            <h3>
+                                Explainable Predictions
+                            </h3>
+
+                            <p>
+                                Understand which candidate features
+                                influence the classification result.
+                            </p>
+
+                        </article>
+
+
+                        <article class="feature-card">
+
+                            <div class="feature-icon">
+                                ML
+                            </div>
+
+                            <h3>
+                                Model Evaluation
+                            </h3>
+
+                            <p>
+                                Analyze accuracy, precision, recall,
+                                F1-score and other performance metrics.
+                            </p>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= HOW IT WORKS ================= -->
+
+            <section class="how-it-works" id="how-it-works">
+
+                <div class="container">
+
+                    <div class="section-heading">
+
+                        <span class="section-label">
+                            WORKFLOW
+                        </span>
+
+                        <h2>
+                            How HireWise works
+                        </h2>
+
+                        <p>
+                            From candidate information to a machine
+                            learning prediction in three steps.
+                        </p>
+
+                    </div>
+
+
+                    <div class="steps">
+
+                        <div class="step">
+
+                            <span class="step-number">
+                                01
+                            </span>
+
+                            <h3>
+                                Enter Candidate Data
+                            </h3>
+
+                            <p>
+                                Provide education, experience,
+                                skills and interview information.
+                            </p>
+
+                        </div>
+
+
+                        <div class="step">
+
+                            <span class="step-number">
+                                02
+                            </span>
+
+                            <h3>
+                                Analyze with ML
+                            </h3>
+
+                            <p>
+                                Classification models process
+                                the candidate's features.
+                            </p>
+
+                        </div>
+
+
+                        <div class="step">
+
+                            <span class="step-number">
+                                03
+                            </span>
+
+                            <h3>
+                                Review Prediction
+                            </h3>
+
+                            <p>
+                                View the predicted outcome,
+                                probability and influencing factors.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer class="footer">
+
+            <div class="container footer-container">
+
+                <div>
+
+                    <a href="/" class="logo">
+                        HireWise<span>AI</span>
+                    </a>
+
+                    <p>
+                        Intelligent candidate screening
+                        powered by machine learning.
+                    </p>
+
+                </div>
+
+                <p class="copyright">
+                    © 2026 HireWise AI
+                </p>
+
+            </div>
+
+        </footer>
+
+
+        <!-- Main JavaScript -->
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    </body>
+
+</html>

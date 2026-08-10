@@ -1,0 +1,315 @@
+/* ============================================================
+   HISTORY PAGE
+   ============================================================ */
+
+.history-page {
+    min-height: calc(100vh - 160px);
+    padding: 80px 0;
+}
+
+
+.history-heading {
+    max-width: 720px;
+    margin-bottom: 44px;
+}
+
+
+.history-heading h1 {
+    margin: 12px 0;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.history-heading p {
+    line-height: 1.7;
+    opacity: 0.7;
+}
+
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.history-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+
+.summary-stat {
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+}
+
+
+.summary-stat span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+
+.summary-stat strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 28px;
+}
+
+
+/* ============================================================
+   HISTORY CARD
+   ============================================================ */
+
+.history-card {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+}
+
+
+.history-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+
+.history-table th {
+    padding: 18px 20px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.03);
+    opacity: 0.65;
+}
+
+
+.history-table td {
+    padding: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 14px;
+}
+
+
+.history-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+
+.history-table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+
+/* ============================================================
+   RISK BADGES
+   ============================================================ */
+
+.risk-badge {
+    display: inline-flex;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.risk-badge.high-risk {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+
+.risk-badge.low-risk {
+    background: rgba(34, 197, 94, 0.1);
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.empty-history {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 60px 30px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+}
+
+
+.empty-icon {
+    margin-bottom: 20px;
+    font-size: 42px;
+    opacity: 0.3;
+}
+
+
+.empty-history h2 {
+    margin-bottom: 10px;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.empty-history p {
+    margin-bottom: 24px;
+    line-height: 1.6;
+    opacity: 0.65;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .history-page {
+        padding: 50px 0;
+    }
+
+
+    .history-summary {
+        grid-template-columns: 1fr;
+    }
+
+
+    .history-table {
+        min-width: 760px;
+    }
+
+}
+
+/* ============================================================
+   HISTORY CONTROLS
+   ============================================================ */
+
+.history-controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+
+.history-controls label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+
+.history-controls input,
+.history-controls select {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    background: white;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    outline: none;
+}
+
+
+.history-controls input:focus,
+.history-controls select:focus {
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+
+/* ============================================================
+   RESPONSIVE CONTROLS
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .history-controls {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ============================================================
+   FILTER EMPTY MESSAGE
+   ============================================================ */
+
+.history-filter-empty {
+    margin-top: 16px;
+    padding: 24px;
+    text-align: center;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+    font-size: 14px;
+    opacity: 0.65;
+}
+
+/* ============================================================
+   RESULT COUNT
+   ============================================================ */
+
+.history-result-count {
+    margin-bottom: 16px;
+    font-size: 13px;
+    opacity: 0.65;
+}
+
+
+.history-result-count strong {
+    font-weight: 700;
+    opacity: 1;
+}
+
+
+/* ============================================================
+   FILTER EMPTY STATE
+   ============================================================ */
+
+.history-filter-empty {
+    margin-top: 16px;
+    padding: 40px 24px;
+    text-align: center;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: white;
+}
+
+
+.filter-empty-icon {
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.4;
+}
+
+
+.history-filter-empty h3 {
+    margin-bottom: 8px;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.history-filter-empty p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.6;
+}

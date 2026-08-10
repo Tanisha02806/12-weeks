@@ -1,0 +1,794 @@
+/* ============================================================
+   ANALYTICS PAGE
+   ============================================================ */
+
+.analytics-page {
+    min-height: calc(100vh - 160px);
+    padding: 80px 0;
+}
+
+
+/* ============================================================
+   HEADING
+   ============================================================ */
+
+.analytics-heading {
+    max-width: 760px;
+    margin-bottom: 48px;
+}
+
+
+.analytics-heading h1 {
+    margin: 12px 0 16px;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.analytics-heading p {
+    max-width: 680px;
+    line-height: 1.7;
+    opacity: 0.7;
+}
+
+
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+
+.analytics-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+
+.analytics-stat-card {
+    padding: 26px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    background: white;
+}
+
+
+.analytics-stat-card span {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.6;
+}
+
+
+.analytics-stat-card strong {
+    display: block;
+    margin-bottom: 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 32px;
+}
+
+
+.analytics-stat-card p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.55;
+}
+
+
+/* ============================================================
+   ANALYTICS GRID
+   ============================================================ */
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+
+/* ============================================================
+   ANALYTICS CARD
+   ============================================================ */
+
+.analytics-card {
+    padding: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    background: white;
+}
+
+
+.analytics-card-header {
+    margin-bottom: 24px;
+}
+
+
+.card-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    opacity: 0.5;
+}
+
+
+.analytics-card h2 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 21px;
+}
+
+
+.analytics-card-header p {
+    max-width: 650px;
+    margin-top: 8px;
+    line-height: 1.6;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+
+/* ============================================================
+   CHART PLACEHOLDER
+   ============================================================ */
+
+.chart-placeholder {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.025);
+    border: 1px dashed rgba(0, 0, 0, 0.12);
+    font-size: 13px;
+    opacity: 0.5;
+}
+
+/* ============================================================
+   CHART CONTAINER
+   ============================================================ */
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+
+/* ============================================================
+   FEATURE IMPORTANCE
+   ============================================================ */
+
+.feature-card {
+    margin-bottom: 24px;
+}
+
+
+.feature-placeholder {
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.025);
+    border: 1px dashed rgba(0, 0, 0, 0.12);
+    font-size: 13px;
+    opacity: 0.5;
+}
+
+
+/* ============================================================
+   MODEL DETAILS
+   ============================================================ */
+
+.model-card {
+    margin-bottom: 24px;
+}
+
+
+.model-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+
+.model-detail {
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+
+.model-detail span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+
+.model-detail strong {
+    font-size: 15px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .analytics-page {
+        padding: 50px 0;
+    }
+
+
+    .analytics-stats {
+        grid-template-columns: 1fr;
+    }
+
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .model-details {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ============================================================
+   DATASET OVERVIEW
+   ============================================================ */
+
+.dataset-overview {
+    margin-bottom: 24px;
+    padding: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    background: white;
+}
+
+
+.dataset-overview-header {
+    margin-bottom: 28px;
+}
+
+
+.dataset-overview-header h2 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 21px;
+}
+
+
+.dataset-overview-header p {
+    max-width: 700px;
+    margin-top: 8px;
+    line-height: 1.6;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+
+.dataset-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+
+.dataset-stat {
+    padding: 18px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+
+.dataset-stat span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0.6;
+}
+
+
+.dataset-stat strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+}
+
+
+/* ============================================================
+   DATASET RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    .dataset-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .dataset-stats {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ============================================================
+   EMPTY CHART STATE
+   ============================================================ */
+
+.analytics-empty-chart {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.025);
+    border: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+
+.analytics-empty-chart strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+}
+
+
+.analytics-empty-chart span {
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+/* ============================================================
+   ATTRITION INSIGHTS
+   ============================================================ */
+
+.insights-section {
+    margin-bottom: 24px;
+}
+
+
+.insights-heading {
+    max-width: 760px;
+    margin-bottom: 24px;
+}
+
+
+.insights-heading h2 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+}
+
+
+.insights-heading p {
+    max-width: 700px;
+    margin-top: 8px;
+    line-height: 1.6;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+
+/* ============================================================
+   INSIGHT GRID
+   ============================================================ */
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+
+/* ============================================================
+   INSIGHT CARD
+   ============================================================ */
+
+.insight-card {
+    padding: 26px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    background: white;
+}
+
+
+.insight-card-header {
+    margin-bottom: 24px;
+}
+
+
+.insight-card-header h3 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+}
+
+
+/* ============================================================
+   INSIGHT ROW
+   ============================================================ */
+
+.insight-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+.insight-row-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+
+.insight-row-header strong {
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   INSIGHT BAR
+   ============================================================ */
+
+.insight-bar {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.07);
+}
+
+
+.insight-bar-fill {
+    height: 100%;
+    min-width: 2px;
+    border-radius: inherit;
+    background: currentColor;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ============================================================
+   INSIGHT HIGHLIGHT
+   ============================================================ */
+
+.insight-highlight {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+}
+
+
+.insight-highlight span {
+    font-size: 12px;
+    opacity: 0.55;
+}
+
+
+.insight-highlight strong {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* ============================================================
+   INSIGHT SUMMARY
+   ============================================================ */
+
+.insight-summary {
+    margin-top: 20px;
+    padding: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    background: white;
+}
+
+
+.insight-summary-header {
+    margin-bottom: 24px;
+}
+
+
+.insight-summary-header h3 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 19px;
+}
+
+
+/* ============================================================
+   SUMMARY LIST
+   ============================================================ */
+
+.insight-summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+
+.insight-summary-item {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    align-items: start;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.025);
+}
+
+
+.summary-number {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: 0.45;
+}
+
+
+.insight-summary-item p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   INTERPRETATION NOTE
+   ============================================================ */
+
+.insight-summary-note {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.035);
+    font-size: 12px;
+    line-height: 1.6;
+    opacity: 0.7;
+}
+
+
+.insight-summary-note strong {
+    font-weight: 700;
+    opacity: 1;
+}
+
+/* ============================================================
+   FEATURE IMPORTANCE CHART
+   ============================================================ */
+
+.feature-chart-container {
+    position: relative;
+    width: 100%;
+    height: 420px;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    .feature-chart-container {
+        height: 440px;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .feature-card {
+        padding: 20px;
+    }
+
+
+    .feature-chart-container {
+        height: 500px;
+    }
+
+}
+
+/* ============================================================
+   MODEL PERFORMANCE
+   ============================================================ */
+
+.model-performance-card {
+    margin-top: 24px;
+    padding: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    background: white;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.model-performance-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+
+.model-performance-header h3 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 22px;
+}
+
+
+.evaluation-badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.05);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   MODEL DETAILS
+   ============================================================ */
+
+.model-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+
+.model-detail {
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.025);
+}
+
+
+.model-detail span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    opacity: 0.55;
+}
+
+
+.model-detail strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   EVALUATION METRICS
+   ============================================================ */
+
+.evaluation-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+
+.evaluation-metric {
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.025);
+}
+
+
+.evaluation-metric span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+
+.evaluation-metric strong {
+    font-family: "Poppins", sans-serif;
+    font-size: 22px;
+}
+
+
+/* ============================================================
+   EVALUATION NOTE
+   ============================================================ */
+
+.evaluation-note {
+    margin-top: 20px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.035);
+    font-size: 12px;
+    line-height: 1.6;
+    opacity: 0.7;
+}
+
+
+.evaluation-note strong {
+    opacity: 1;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .evaluation-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .model-performance-card {
+        padding: 20px;
+    }
+
+
+    .model-performance-header {
+        flex-direction: column;
+    }
+
+
+    .model-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .evaluation-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}

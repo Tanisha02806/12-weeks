@@ -1,0 +1,1 @@
+console.log("HireWise AI loaded successfully.")

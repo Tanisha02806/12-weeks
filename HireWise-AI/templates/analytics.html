@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Analytics | HireWise AI</title>
+
+
+    <!-- Google Fonts -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/style.css'
+        ) }}"
+    >
+
+
+    <!-- Analytics CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/analytics.css'
+        ) }}"
+    >
+
+    <!-- Chart.js -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js"
+    ></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- ====================================================
+         NAVBAR
+         ==================================================== -->
+
+    <header class="navbar">
+
+        <div class="container navbar-container">
+
+
+            <a
+                href="/"
+                class="logo"
+            >
+                HireWise<span>AI</span>
+            </a>
+
+
+            <nav class="nav-links">
+
+                <a
+                    href="/"
+                    class="nav-link"
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="/predict"
+                    class="nav-link"
+                >
+                    Predict
+                </a>
+
+
+                <a
+                    href="/prediction-history"
+                    class="nav-link"
+                >
+                    History
+                </a>
+
+
+                <a
+                    href="/analytics"
+                    class="nav-link active"
+                >
+                    Analytics
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-link"
+                >
+                    About
+                </a>
+
+            </nav>
+
+
+            <a
+                href="/predict"
+                class="nav-button"
+            >
+                New Analysis
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ====================================================
+         MAIN
+         ==================================================== -->
+
+    <main>
+
+        <section class="analytics-page">
+
+            <div class="container">
+
+
+                <!-- ====================================================
+                     PAGE HEADER
+                     ==================================================== -->
+
+                <div class="analytics-heading">
+
+                    <span class="section-label">
+                        MODEL ANALYTICS
+                    </span>
+
+
+                    <h1>
+                        Understand HireWise predictions
+                    </h1>
+
+
+                    <p>
+                        Explore prediction patterns, model
+                        behavior, and the factors used by the
+                        classification system.
+                    </p>
+
+                </div>
+
+
+
+                <!-- ====================================================
+                     STAT CARDS
+                     ==================================================== -->
+
+                <div class="analytics-stats">
+
+
+                    <div class="analytics-stat-card">
+
+                        <span>
+                            Total Predictions
+                        </span>
+
+                        <strong>
+                            {{ prediction_stats.total_predictions }}
+                        </strong>
+
+                        <p>
+                            Stored analyses
+                        </p>
+
+                    </div>
+
+
+                    <div class="analytics-stat-card">
+
+                        <span>
+                            High Risk
+                        </span>
+
+                        <strong>
+                            {{ prediction_stats.high_risk_count }}
+                        </strong>
+
+                        <p>
+                            Predicted high-risk cases
+                        </p>
+
+                    </div>
+
+
+                    <div class="analytics-stat-card">
+
+                        <span>
+                            Average Probability
+                        </span>
+
+                        <strong>
+                            {{ prediction_stats.average_probability }}%
+                        </strong>
+
+                        <p>
+                            Across predictions
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- ====================================================
+                    DATASET OVERVIEW
+                    ==================================================== -->
+
+                <div class="dataset-overview">
+
+                    <div class="dataset-overview-header">
+
+                        <span class="card-label">
+                            TRAINING DATASET
+                        </span>
+
+                        <h2>
+                            Dataset overview
+                        </h2>
+
+                        <p>
+                            Basic statistics from the employee attrition
+                            dataset used to train the classification models.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dataset-stats">
+
+
+                        <div class="dataset-stat">
+
+                            <span>
+                                Records
+                            </span>
+
+                            <strong>
+                                {{ dataset_stats.total_records }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dataset-stat">
+
+                            <span>
+                                Attrition Cases
+                            </span>
+
+                            <strong>
+                                {{ dataset_stats.attrition_count }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dataset-stat">
+
+                            <span>
+                                Dataset Attrition Rate
+                            </span>
+
+                            <strong>
+                                {{ dataset_stats.attrition_rate }}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dataset-stat">
+
+                            <span>
+                                Average Age
+                            </span>
+
+                            <strong>
+                                {{ dataset_stats.average_age }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dataset-stat">
+
+                            <span>
+                                Average Monthly Income
+                            </span>
+
+                            <strong>
+                                ₹{{ dataset_stats.average_income }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <!-- ====================================================
+                    ATTRITION INSIGHTS
+                    ==================================================== -->
+
+                <div class="insights-section">
+
+                    <div class="insights-heading">
+
+                        <span class="card-label">
+                            DATASET INSIGHTS
+                        </span>
+
+                        <h2>
+                            Observed attrition patterns
+                        </h2>
+
+                        <p>
+                            These percentages describe patterns observed
+                            in the training dataset. They do not imply
+                            that a factor directly causes attrition.
+                        </p>
+
+                    </div>
+
+
+                    <div class="insights-grid">
+
+
+                        <!-- ================= OVERTIME ================= -->
+
+                        <div class="insight-card">
+
+                            <div class="insight-card-header">
+
+                                <span class="card-label">
+                                    OVERTIME
+                                </span>
+
+                                <h3>
+                                    Attrition by overtime
+                                </h3>
+
+                            </div>
+
+
+                            <div class="insight-list">
+
+                                {% for item in attrition_insights.overtime %}
+
+                                <div class="insight-row">
+
+
+                                    <div class="insight-row-header">
+
+                                        <span>
+                                            {{ item.label }}
+                                        </span>
+
+                                        <strong>
+                                            {{ item.rate }}%
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="insight-bar">
+
+                                        <div
+                                            class="insight-bar-fill"
+                                            style="width: {{ item.rate }}%;"
+                                        ></div>
+
+                                    </div>
+
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="insight-highlight">
+
+                                <span>
+                                    Highest observed rate
+                                </span>
+
+                                <strong>
+                                    {{ attrition_insights.overtime_highest.label }}
+                                    —
+                                    {{ attrition_insights.overtime_highest.rate }}%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ================= JOB SATISFACTION ================= -->
+
+                        <div class="insight-card">
+
+                            <div class="insight-card-header">
+
+                                <span class="card-label">
+                                    JOB SATISFACTION
+                                </span>
+
+                                <h3>
+                                    Attrition by satisfaction
+                                </h3>
+
+                            </div>
+
+
+                            <div class="insight-list">
+
+                                {% for item in attrition_insights.job_satisfaction %}
+
+                                <div class="insight-row">
+
+
+                                    <div class="insight-row-header">
+
+                                        <span>
+                                            Level {{ item.label }}
+                                        </span>
+
+                                        <strong>
+                                            {{ item.rate }}%
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="insight-bar">
+
+                                        <div
+                                            class="insight-bar-fill"
+                                            style="width: {{ item.rate }}%;"
+                                        ></div>
+
+                                    </div>
+
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="insight-highlight">
+
+                                <span>
+                                    Highest observed rate
+                                </span>
+
+                                <strong>
+                                    Level
+                                    {{ attrition_insights.job_satisfaction_highest.label }}
+                                    —
+                                    {{ attrition_insights.job_satisfaction_highest.rate }}%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ================= BUSINESS TRAVEL ================= -->
+
+                        <div class="insight-card">
+
+                            <div class="insight-card-header">
+
+                                <span class="card-label">
+                                    BUSINESS TRAVEL
+                                </span>
+
+                                <h3>
+                                    Attrition by travel
+                                </h3>
+
+                            </div>
+
+
+                            <div class="insight-list">
+
+                                {% for item in attrition_insights.business_travel %}
+
+                                <div class="insight-row">
+
+
+                                    <div class="insight-row-header">
+
+                                        <span>
+                                            {{ item.label }}
+                                        </span>
+
+                                        <strong>
+                                            {{ item.rate }}%
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="insight-bar">
+
+                                        <div
+                                            class="insight-bar-fill"
+                                            style="width: {{ item.rate }}%;"
+                                        ></div>
+
+                                    </div>
+
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="insight-highlight">
+
+                                <span>
+                                    Highest observed rate
+                                </span>
+
+                                <strong>
+                                    {{ attrition_insights.business_travel_highest.label }}
+                                    —
+                                    {{ attrition_insights.business_travel_highest.rate }}%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ================= WORK-LIFE BALANCE ================= -->
+
+                        <div class="insight-card">
+
+                            <div class="insight-card-header">
+
+                                <span class="card-label">
+                                    WORK-LIFE BALANCE
+                                </span>
+
+                                <h3>
+                                    Attrition by balance
+                                </h3>
+
+                            </div>
+
+
+                            <div class="insight-list">
+
+                                {% for item in attrition_insights.work_life_balance %}
+
+                                <div class="insight-row">
+
+
+                                    <div class="insight-row-header">
+
+                                        <span>
+                                            {{ item.label }}
+                                        </span>
+
+                                        <strong>
+                                            {{ item.rate }}%
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="insight-bar">
+
+                                        <div
+                                            class="insight-bar-fill"
+                                            style="width: {{ item.rate }}%;"
+                                        ></div>
+
+                                    </div>
+
+
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="insight-highlight">
+
+                                <span>
+                                    Highest observed rate
+                                </span>
+
+                                <strong>
+                                    {{ attrition_insights.work_life_balance_highest.label }}
+                                    —
+                                    {{ attrition_insights.work_life_balance_highest.rate }}%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <!-- ====================================================
+                        INSIGHT SUMMARY
+                        ==================================================== -->
+
+                    <div class="insight-summary">
+
+                        <div class="insight-summary-header">
+
+                            <span class="card-label">
+                                AUTOMATED SUMMARY
+                            </span>
+
+                            <h3>
+                                What the dataset shows
+                            </h3>
+
+                        </div>
+
+
+                        <div class="insight-summary-list">
+
+
+                            <div class="insight-summary-item">
+
+                                <span class="summary-number">
+                                    01
+                                </span>
+
+                                <p>
+                                    {{ attrition_summary.overtime }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="insight-summary-item">
+
+                                <span class="summary-number">
+                                    02
+                                </span>
+
+                                <p>
+                                    {{ attrition_summary.job_satisfaction }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="insight-summary-item">
+
+                                <span class="summary-number">
+                                    03
+                                </span>
+
+                                <p>
+                                    {{ attrition_summary.business_travel }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="insight-summary-item">
+
+                                <span class="summary-number">
+                                    04
+                                </span>
+
+                                <p>
+                                    {{ attrition_summary.work_life_balance }}
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="insight-summary-note">
+
+                            <strong>
+                                Interpretation note:
+                            </strong>
+
+                            These observations describe relationships
+                            present in the training dataset. They should
+                            not be interpreted as evidence that any single
+                            factor directly causes employee attrition.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ====================================================
+                     CHART SECTION
+                     ==================================================== -->
+
+                <div class="analytics-grid">
+
+
+                    <!-- PREDICTION DISTRIBUTION -->
+
+                    <div class="analytics-card">
+
+                        <div class="analytics-card-header">
+
+                            <div>
+
+                                <span class="card-label">
+                                    PREDICTION DISTRIBUTION
+                                </span>
+
+                                <h2>
+                                    Attrition predictions
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chart-placeholder">
+
+                            <span>
+                                Chart will appear here
+                            </span>
+
+                        </div>
+
+                        <div class="chart-container">
+
+                            <canvas
+                                id="predictionChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- RISK DISTRIBUTION -->
+
+                    <div class="analytics-card">
+
+                        <div class="analytics-card-header">
+
+                            <div>
+
+                                <span class="card-label">
+                                    RISK DISTRIBUTION
+                                </span>
+
+                                <h2>
+                                    Probability ranges
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-container">
+
+                            <canvas
+                                id="probabilityChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ====================================================
+                     FEATURE IMPORTANCE
+                     ==================================================== -->
+
+                <div class="analytics-card feature-card">
+
+                    <div class="analytics-card-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                MODEL EXPLANATION
+                            </span>
+
+                            <h2>
+                                Feature importance
+                            </h2>
+
+                            <p>
+                                The features that contribute most
+                                to the trained model's decisions.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-chart-container">
+
+                        <canvas
+                            id="featureImportanceChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ====================================================
+                    MODEL PERFORMANCE
+                    ==================================================== -->
+
+                <div class="model-performance-card">
+
+                    <div class="model-performance-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                MODEL PERFORMANCE
+                            </span>
+
+                            <h3>
+                                {{ model_metrics.model_name }}
+                            </h3>
+
+                        </div>
+
+                        <span class="evaluation-badge">
+                            Test Set
+                        </span>
+
+                    </div>
+
+
+                    <!-- ==================================================
+                        MODEL DETAILS
+                        ================================================== -->
+
+                    <div class="model-details-grid">
+
+                        <div class="model-detail">
+
+                            <span>
+                                Machine Learning Task
+                            </span>
+
+                            <strong>
+                                Binary Classification
+                            </strong>
+
+                        </div>
+
+
+                        <div class="model-detail">
+
+                            <span>
+                                Prediction Target
+                            </span>
+
+                            <strong>
+                                Employee Attrition
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ==================================================
+                        EVALUATION METRICS
+                        ================================================== -->
+
+                    <div class="evaluation-metrics">
+
+                        <div class="evaluation-metric">
+
+                            <span>
+                                Accuracy
+                            </span>
+
+                            <strong>
+                                {{ model_metrics.accuracy }}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evaluation-metric">
+
+                            <span>
+                                Precision
+                            </span>
+
+                            <strong>
+                                {{ model_metrics.precision }}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evaluation-metric">
+
+                            <span>
+                                Recall
+                            </span>
+
+                            <strong>
+                                {{ model_metrics.recall }}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evaluation-metric">
+
+                            <span>
+                                F1 Score
+                            </span>
+
+                            <strong>
+                                {{ model_metrics.f1_score }}%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="evaluation-note">
+
+                        <strong>
+                            Evaluation context:
+                        </strong>
+
+                        These metrics represent performance measured
+                        on the test dataset used during model evaluation.
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ====================================================
+         FOOTER
+         ==================================================== -->
+
+    <footer class="footer">
+
+        <div class="container footer-container">
+
+
+            <div>
+
+                <a
+                    href="/"
+                    class="logo"
+                >
+                    HireWise<span>AI</span>
+                </a>
+
+
+                <p>
+                    Intelligent employee attrition
+                    analysis powered by machine learning.
+                </p>
+
+            </div>
+
+
+            <p class="copyright">
+                © 2026 HireWise AI
+            </p>
+
+        </div>
+
+    </footer>
+
+    <script
+        src="{{ url_for(
+            'static',
+            filename='js/analytics.js'
+        ) }}"
+    ></script>
+
+</body>
+
+</html>

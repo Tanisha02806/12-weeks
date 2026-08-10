@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Employee Analysis | HireWise AI</title>
+
+
+    <!-- Google Fonts -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <!-- Prediction CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/predict.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="container navbar-container">
+
+
+            <a
+                href="/"
+                class="logo"
+            >
+                HireWise<span>AI</span>
+            </a>
+
+
+            <nav class="nav-links">
+
+                <a
+                    href="/"
+                    class="nav-link"
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="/predict"
+                    class="nav-link active"
+                >
+                    Predict
+                </a>
+
+                <a
+                    href="/prediction-history"
+                    class="nav-link"
+                >
+                    History
+                </a>
+
+                <a
+                    href="/analytics"
+                    class="nav-link"
+                >
+                    Analytics
+                </a>
+
+
+                <a
+                    href="#"
+                    class="nav-link"
+                >
+                    About
+                </a>
+
+            </nav>
+
+
+            <a
+                href="/predict"
+                class="nav-button"
+            >
+                New Analysis
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+
+        <section class="prediction-page">
+
+            <div class="container">
+
+
+                <!-- PAGE HEADING -->
+
+                <div class="page-heading">
+
+                    <span class="section-label">
+                        EMPLOYEE ANALYSIS
+                    </span>
+
+
+                    <h1>
+                        Analyze employee attrition risk
+                    </h1>
+
+
+                    <p>
+                        Enter the employee's information below.
+                        HireWise AI will use trained classification
+                        models to estimate their attrition risk.
+                    </p>
+
+                </div>
+
+
+
+                <!-- ================= FORM ================= -->
+
+                <form
+                    class="candidate-form"
+                    id="candidate-form"
+                    method="POST"
+                    action="/predict"
+                >
+
+
+                    <!-- ================= SECTION 01 ================= -->
+
+                    <div class="form-section">
+
+
+                        <div class="form-section-header">
+
+                            <div class="section-number">
+                                01
+                            </div>
+
+
+                            <div>
+
+                                <h2>
+                                    Personal Information
+                                </h2>
+
+                                <p>
+                                    Basic employee information
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-grid">
+
+
+                            <!-- AGE -->
+
+                            <div class="form-group">
+
+                                <label for="age">
+                                    Age
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="age"
+                                    name="age"
+                                    placeholder="e.g. 29"
+                                    min="18"
+                                    max="70"
+                                    required
+                                >
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= SECTION 02 ================= -->
+
+                    <div class="form-section">
+
+
+                        <div class="form-section-header">
+
+                            <div class="section-number">
+                                02
+                            </div>
+
+
+                            <div>
+
+                                <h2>
+                                    Job Information
+                                </h2>
+
+                                <p>
+                                    Employee's role and work environment
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-grid">
+
+
+                            <!-- BUSINESS TRAVEL -->
+
+                            <div class="form-group">
+
+                                <label for="business-travel">
+                                    Business Travel
+                                </label>
+
+
+                                <select
+                                    id="business-travel"
+                                    name="business_travel"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select travel frequency
+                                    </option>
+
+                                    <option value="Travel_Rarely">
+                                        Travel Rarely
+                                    </option>
+
+                                    <option value="Travel_Frequently">
+                                        Travel Frequently
+                                    </option>
+
+                                    <option value="Non-Travel">
+                                        Non-Travel
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- JOB ROLE -->
+
+                            <div class="form-group">
+
+                                <label for="job-role">
+                                    Job Role
+                                </label>
+
+
+                                <select
+                                    id="job-role"
+                                    name="job_role"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select job role
+                                    </option>
+
+                                    <option value="Sales Executive">
+                                        Sales Executive
+                                    </option>
+
+                                    <option value="Research Scientist">
+                                        Research Scientist
+                                    </option>
+
+                                    <option value="Laboratory Technician">
+                                        Laboratory Technician
+                                    </option>
+
+                                    <option value="Manufacturing Director">
+                                        Manufacturing Director
+                                    </option>
+
+                                    <option value="Healthcare Representative">
+                                        Healthcare Representative
+                                    </option>
+
+                                    <option value="Manager">
+                                        Manager
+                                    </option>
+
+                                    <option value="Sales Representative">
+                                        Sales Representative
+                                    </option>
+
+                                    <option value="Research Director">
+                                        Research Director
+                                    </option>
+
+                                    <option value="Human Resources">
+                                        Human Resources
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= SECTION 03 ================= -->
+
+                    <div class="form-section">
+
+
+                        <div class="form-section-header">
+
+                            <div class="section-number">
+                                03
+                            </div>
+
+
+                            <div>
+
+                                <h2>
+                                    Compensation & Experience
+                                </h2>
+
+                                <p>
+                                    Financial and professional background
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-grid">
+
+
+                            <!-- MONTHLY INCOME -->
+
+                            <div class="form-group">
+
+                                <label for="monthly-income">
+                                    Monthly Income
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="monthly-income"
+                                    name="monthly_income"
+                                    placeholder="e.g. 4500"
+                                    min="100"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- NUMBER OF COMPANIES -->
+
+                            <div class="form-group">
+
+                                <label for="num-companies-worked">
+                                    Previous Companies Worked
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="num-companies-worked"
+                                    name="num_companies_worked"
+                                    placeholder="e.g. 2"
+                                    min="0"
+                                    max="20"
+                                    required
+                                >
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= SECTION 04 ================= -->
+
+                    <div class="form-section">
+
+
+                        <div class="form-section-header">
+
+                            <div class="section-number">
+                                04
+                            </div>
+
+
+                            <div>
+
+                                <h2>
+                                    Employee Experience
+                                </h2>
+
+                                <p>
+                                    Satisfaction, workload and workplace factors
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-grid">
+
+
+                            <!-- OVERTIME -->
+
+                            <div class="form-group">
+
+                                <label for="over-time">
+                                    Overtime
+                                </label>
+
+
+                                <select
+                                    id="over-time"
+                                    name="over_time"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select overtime status
+                                    </option>
+
+                                    <option value="Yes">
+                                        Yes
+                                    </option>
+
+                                    <option value="No">
+                                        No
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- JOB SATISFACTION -->
+
+                            <div class="form-group">
+
+                                <label for="job-satisfaction">
+                                    Job Satisfaction
+                                </label>
+
+
+                                <select
+                                    id="job-satisfaction"
+                                    name="job_satisfaction"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select satisfaction level
+                                    </option>
+
+                                    <option value="Low">
+                                        Low
+                                    </option>
+
+                                    <option value="Medium">
+                                        Medium
+                                    </option>
+
+                                    <option value="High">
+                                        High
+                                    </option>
+
+                                    <option value="Very High">
+                                        Very High
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- ENVIRONMENT SATISFACTION -->
+
+                            <div class="form-group">
+
+                                <label for="environment-satisfaction">
+                                    Environment Satisfaction
+                                </label>
+
+
+                                <select
+                                    id="environment-satisfaction"
+                                    name="environment_satisfaction"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select satisfaction level
+                                    </option>
+
+                                    <option value="Low">
+                                        Low
+                                    </option>
+
+                                    <option value="Medium">
+                                        Medium
+                                    </option>
+
+                                    <option value="High">
+                                        High
+                                    </option>
+
+                                    <option value="Very high">
+                                        Very high
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- WORK LIFE BALANCE -->
+
+                            <div class="form-group">
+
+                                <label for="work-life-balance">
+                                    Work-Life Balance
+                                </label>
+
+
+                                <select
+                                    id="work-life-balance"
+                                    name="work_life_balance"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select balance level
+                                    </option>
+
+                                    <option value="Bad">
+                                        Bad
+                                    </option>
+
+                                    <option value="Better">
+                                        Better
+                                    </option>
+
+                                    <option value="Good">
+                                        Good
+                                    </option>
+
+                                    <option value="Best">
+                                        Best
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= ACTIONS ================= -->
+
+                    <div class="form-actions">
+
+
+                        <a
+                            href="/"
+                            class="cancel-button"
+                        >
+                            Cancel
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Analyze Employee
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container footer-container">
+
+
+            <div>
+
+                <a
+                    href="/"
+                    class="logo"
+                >
+                    HireWise<span>AI</span>
+                </a>
+
+
+                <p>
+                    Intelligent employee attrition
+                    analysis powered by machine learning.
+                </p>
+
+            </div>
+
+
+            <p class="copyright">
+                © 2026 HireWise AI
+            </p>
+
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script
+        src="{{ url_for('static', filename='js/predict.js') }}"
+    ></script>
+
+
+</body>
+
+</html>
