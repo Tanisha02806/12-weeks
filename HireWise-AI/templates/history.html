@@ -10,41 +10,16 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Prediction History | HireWise AI</title>
-
-
-    <!-- Google Fonts -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- Main CSS -->
+    <title>
+        Prediction History | HireWise AI
+    </title>
 
     <link
         rel="stylesheet"
-        href="{{ url_for('static', filename='css/style.css') }}"
-    >
-
-
-    <!-- History CSS -->
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='css/history.css') }}"
+        href="{{ url_for(
+            'static',
+            filename='css/analytics.css'
+        ) }}"
     >
 
 </head>
@@ -52,328 +27,184 @@
 
 <body>
 
+    <main class="history-page">
 
-    <!-- ================= NAVBAR ================= -->
+        <!-- ==================================================
+             PAGE HEADER
+             ================================================== -->
 
-    <header class="navbar">
+        <section class="history-header">
 
-        <div class="container navbar-container">
+            <span class="card-label">
+                HIREWISE AI
+            </span>
 
+            <h1>
+                Prediction History
+            </h1>
 
-            <a
-                href="/"
-                class="logo"
-            >
-                HireWise<span>AI</span>
-            </a>
+            <p>
+                View previous employee attrition
+                predictions made through the application.
+            </p>
 
+        </section>
 
-            <nav class="nav-links">
+        <!-- ==================================================
+            HISTORY STATISTICS
+            ================================================== -->
 
-                <a
-                    href="/"
-                    class="nav-link"
-                >
-                    Home
-                </a>
+        <section class="history-stats">
 
+            <!-- TOTAL -->
 
-                <a
-                    href="/predict"
-                    class="nav-link"
-                >
-                    Predict
-                </a>
+            <div class="history-stat-card">
 
+                <span class="history-stat-label">
+                    TOTAL PREDICTIONS
+                </span>
 
-                <a
-                    href="/prediction-history"
-                    class="nav-link active"
-                >
-                    History
-                </a>
+                <strong>
+                    {{ history_stats.total }}
+                </strong>
 
-
-                <a
-                    href="/analytics"
-                    class="nav-link"
-                >
-                    Analytics
-                </a>
+            </div>
 
 
-                <a
-                    href="#"
-                    class="nav-link"
-                >
-                    About
-                </a>
+            <!-- LIKELY TO LEAVE -->
 
-            </nav>
+            <div class="history-stat-card">
 
+                <span class="history-stat-label">
+                    LIKELY TO LEAVE
+                </span>
 
-            <a
-                href="/predict"
-                class="nav-button"
-            >
-                New Analysis
-            </a>
+                <strong>
+                    {{ history_stats.likely_to_leave }}
+                </strong>
 
-        </div>
-
-    </header>
+            </div>
 
 
+            <!-- LIKELY TO STAY -->
 
-    <!-- ================= MAIN ================= -->
+            <div class="history-stat-card">
 
-    <main>
+                <span class="history-stat-label">
+                    LIKELY TO STAY
+                </span>
 
-        <section class="history-page">
+                <strong>
+                    {{ history_stats.likely_to_stay }}
+                </strong>
 
-            <div class="container">
+            </div>
 
 
-                <!-- PAGE HEADING -->
+            <!-- HIGH RISK -->
 
-                <div class="history-heading">
+            <div class="history-stat-card">
 
-                    <span class="section-label">
-                        PREDICTION HISTORY
+                <span class="history-stat-label">
+                    HIGH RISK
+                </span>
+
+                <strong>
+                    {{ history_stats.high_risk }}
+                </strong>
+
+            </div>
+
+
+            <!-- AVERAGE PROBABILITY -->
+
+            <div class="history-stat-card">
+
+                <span class="history-stat-label">
+                    AVG. PROBABILITY
+                </span>
+
+                <strong>
+                    {{ history_stats.average_probability }}%
+                </strong>
+
+            </div>
+
+        </section>
+
+        <!-- ==================================================
+             HISTORY CARD
+             ================================================== -->
+
+        <section class="history-card">
+
+            <div class="history-card-header">
+
+                <div>
+
+                    <span class="card-label">
+                        PREDICTIONS
                     </span>
 
-
-                    <h1>
-                        Previous employee analyses
-                    </h1>
-
-
-                    <p>
-                        Review the most recent predictions
-                        generated by HireWise AI.
-                    </p>
+                    <h2>
+                        Recent predictions
+                    </h2>
 
                 </div>
 
-
-
-                {% if history %}
-
-
-                <!-- ================= SUMMARY ================= -->
-
-                <div class="history-summary">
-
-                    <div class="summary-stat">
-
-                        <span>
-                            Total Stored
-                        </span>
-
-                        <strong>
-                            {{ history|length }}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="summary-stat">
-
-                        <span>
-                            High Risk
-                        </span>
-
-                        <strong>
-
-                            {{
-                                history
-                                |selectattr(
-                                    "prediction",
-                                    "equalto",
-                                    "High Attrition Risk"
-                                )
-                                |list
-                                |length
-                            }}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="summary-stat">
-
-                        <span>
-                            Low Risk
-                        </span>
-
-                        <strong>
-
-                            {{
-                                history
-                                |selectattr(
-                                    "prediction",
-                                    "equalto",
-                                    "Low Attrition Risk"
-                                )
-                                |list
-                                |length
-                            }}
-
-                        </strong>
-
-                    </div>
-
-                </div>
-
-                <!-- ================= HISTORY CONTROLS ================= -->
-
-                <div class="history-controls">
-
-                    <div class="history-search">
-
-                        <label for="historySearch">
-                            Search Job Role
-                        </label>
-
-                        <input
-                            type="text"
-                            id="historySearch"
-                            placeholder="e.g. Manager, Sales Executive..."
-                        >
-
-                    </div>
-
-
-                    <div class="history-filter">
-
-                        <label for="riskFilter">
-                            Risk Level
-                        </label>
-
-                        <select id="riskFilter">
-
-                            <option value="all">
-                                All Predictions
-                            </option>
-
-                            <option value="high">
-                                High Risk
-                            </option>
-
-                            <option value="low">
-                                Low Risk
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="history-sort">
-
-                        <label for="probabilitySort">
-                            Sort Probability
-                        </label>
-
-                        <select id="probabilitySort">
-
-                            <option value="newest">
-                                Newest First
-                            </option>
-
-                            <option value="highest">
-                                Highest Risk
-                            </option>
-
-                            <option value="lowest">
-                                Lowest Risk
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-                <div class="history-result-count">
-
-                    Showing
-                    <strong id="visiblePredictionCount">
-                        {{ history|length }}
-                    </strong>
-                    of
-                    <strong>
-                        {{ history|length }}
-                    </strong>
+                <span class="history-count">
+                    {{ history|length }}
                     predictions
+                </span>
 
-                </div>
-
-                <!-- ================= HISTORY TABLE ================= -->
-
-                <div class="history-card">
+            </div>
 
 
-                    <div class="history-table-wrapper">
+            {% if history %}
 
-                        <table class="history-table">
+                <div class="history-table-wrapper">
 
-                            <thead>
+                    <table class="history-table">
 
-                                <tr>
+                        <thead>
 
-                                    <th>
-                                        Date & Time
-                                    </th>
+                            <tr>
 
-                                    <th>
-                                        Job Role
-                                    </th>
+                                <th>
+                                    Date & Time
+                                </th>
 
-                                    <th>
-                                        Prediction
-                                    </th>
+                                <th>
+                                    Prediction
+                                </th>
 
-                                    <th>
-                                        Probability
-                                    </th>
+                                <th>
+                                    Probability
+                                </th>
 
-                                    <th>
-                                        Model
-                                    </th>
+                                <th>
+                                    Risk Level
+                                </th>
 
-                                </tr>
+                            </tr>
 
-                            </thead>
+                        </thead>
 
 
-                            <tbody>
+                        <tbody>
 
-                                {% for item in history %}
+                            {% for item in history %}
 
                                 <tr>
-
 
                                     <td>
                                         {{ item.timestamp }}
                                     </td>
 
-
-                                    <td>
-                                        {{ item.job_role }}
-                                    </td>
-
-
                                     <td>
 
                                         <span
-                                            class="risk-badge
-                                            {% if item.prediction == 'High Attrition Risk' %}
-                                                high-risk
-                                            {% else %}
-                                                low-risk
-                                            {% endif %}"
+                                            class="prediction-badge"
                                         >
 
                                             {{ item.prediction }}
@@ -382,122 +213,62 @@
 
                                     </td>
 
-
                                     <td>
 
-                                        <strong>
-                                            {{ item.probability }}%
-                                        </strong>
+                                        {{
+                                            (
+                                                item.probability
+                                                * 100
+                                            ) | round(2)
+                                        }}%
 
                                     </td>
 
-
                                     <td>
-                                        {{ item.model }}
-                                    </td>
 
+                                        <span
+                                            class="risk-badge"
+                                        >
+
+                                            {{ item.risk_level }}
+
+                                        </span>
+
+                                    </td>
 
                                 </tr>
 
-                                {% endfor %}
+                            {% endfor %}
 
-                            </tbody>
+                        </tbody>
 
-                        </table>
-
-                    </div>
-
+                    </table>
 
                 </div>
 
+            {% else %}
 
-                {% else %}
+                <div class="history-empty">
 
-
-                <!-- ================= EMPTY STATE ================= -->
-
-                <div class="empty-history">
-
-
-                    <div class="empty-icon">
+                    <div class="history-empty-icon">
                         —
                     </div>
 
+                    <strong>
+                        No prediction history available
+                    </strong>
 
-                    <h2>
-                        No predictions yet
-                    </h2>
-
-
-                    <p>
-                        Your completed employee analyses
-                        will appear here.
-                    </p>
-
-
-                    <a
-                        href="/predict"
-                        class="primary-button"
-                    >
-                        Create First Analysis
-                    </a>
-
+                    <span>
+                        Predictions made through HireWise AI
+                        will appear here once they are available.
+                    </span>
 
                 </div>
 
-
-                {% endif %}
-
-
-            </div>
-
+            {% endif %}
         </section>
 
     </main>
-
-
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="footer">
-
-        <div class="container footer-container">
-
-
-            <div>
-
-                <a
-                    href="/"
-                    class="logo"
-                >
-                    HireWise<span>AI</span>
-                </a>
-
-
-                <p>
-                    Intelligent employee attrition
-                    analysis powered by machine learning.
-                </p>
-
-            </div>
-
-
-            <p class="copyright">
-                © 2026 HireWise AI
-            </p>
-
-
-        </div>
-
-    </footer>
-
-    <script
-        src="{{ url_for(
-            'static',
-            filename='js/history.js'
-        ) }}"
-    ></script>
-
 
 </body>
 

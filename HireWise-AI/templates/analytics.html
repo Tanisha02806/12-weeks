@@ -850,9 +850,28 @@
 
                     <div class="feature-chart-container">
 
-                        <canvas
-                            id="featureImportanceChart"
-                        ></canvas>
+                        {% if feature_importance_data %}
+
+                            <canvas
+                                id="featureImportanceChart"
+                            ></canvas>
+
+                        {% else %}
+
+                            <div class="analytics-empty-state">
+
+                                <strong>
+                                    Feature importance unavailable
+                                </strong>
+
+                                <span>
+                                    Feature importance data could not be loaded
+                                    for this model.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
 
                     </div>
 
@@ -863,6 +882,8 @@
                 <!-- ====================================================
                     MODEL PERFORMANCE
                     ==================================================== -->
+
+                {% if model_metrics.model_name != "Unavailable" %}
 
                 <div class="model-performance-card">
 
@@ -989,6 +1010,513 @@
 
                         These metrics represent performance measured
                         on the test dataset used during model evaluation.
+
+                    </div>
+
+                    <!-- ====================================================
+                        METRIC INTERPRETATION
+                        ==================================================== -->
+
+                    <div class="metric-interpretation">
+
+                        <div class="metric-interpretation-header">
+
+                            <div>
+
+                                <span class="card-label">
+                                    METRIC INTERPRETATION
+                                </span>
+
+                                <h4>
+                                    Understanding model performance
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="metric-explanation-grid">
+
+                            <!-- ACCURACY -->
+
+                            <div class="metric-explanation">
+
+                                <div class="metric-explanation-title">
+
+                                    <strong>
+                                        Accuracy
+                                    </strong>
+
+                                    <span>
+                                        {{ model_metrics.accuracy }}%
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    {{ metric_interpretation.accuracy }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- PRECISION -->
+
+                            <div class="metric-explanation">
+
+                                <div class="metric-explanation-title">
+
+                                    <strong>
+                                        Precision
+                                    </strong>
+
+                                    <span>
+                                        {{ model_metrics.precision }}%
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    {{ metric_interpretation.precision }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- RECALL -->
+
+                            <div class="metric-explanation">
+
+                                <div class="metric-explanation-title">
+
+                                    <strong>
+                                        Recall
+                                    </strong>
+
+                                    <span>
+                                        {{ model_metrics.recall }}%
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    {{ metric_interpretation.recall }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- F1 SCORE -->
+
+                            <div class="metric-explanation">
+
+                                <div class="metric-explanation-title">
+
+                                    <strong>
+                                        F1 Score
+                                    </strong>
+
+                                    <span>
+                                        {{ model_metrics.f1_score }}%
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    {{ metric_interpretation.f1_score }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <!-- ====================================================
+                            CLASSIFICATION CONTEXT
+                            ==================================================== -->
+
+                        <div class="classification-context">
+
+                            <div class="classification-context-header">
+
+                                <span class="card-label">
+                                    CLASSIFICATION CONTEXT
+                                </span>
+
+                                <h4>
+                                    Why multiple metrics matter
+                                </h4>
+
+                            </div>
+
+
+                            <p>
+
+                                This is a binary classification problem where
+                                the model predicts whether an employee is likely
+                                to leave the organization.
+
+                                Because the dataset contains substantially more
+                                non-attrition cases than attrition cases, accuracy
+                                should not be considered in isolation.
+
+                            </p>
+
+
+                            <p>
+
+                                Precision, recall, and F1 Score provide additional
+                                information about how effectively the model handles
+                                the attrition class.
+
+                            </p>
+
+
+                            <div class="classification-context-points">
+
+                                <div>
+
+                                    <strong>
+                                        Accuracy
+                                    </strong>
+
+                                    <span>
+                                        Overall classification correctness.
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        Precision
+                                    </strong>
+
+                                    <span>
+                                        Reliability of positive attrition predictions.
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        Recall
+                                    </strong>
+
+                                    <span>
+                                        Ability to identify actual attrition cases.
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        F1 Score
+                                    </strong>
+
+                                    <span>
+                                        Balance between precision and recall.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                        <div class="analytics-empty-state">
+
+                            <strong>
+                                Model evaluation unavailable
+                            </strong>
+
+                            <span>
+                                Evaluation metrics could not be loaded.
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <!-- ====================================================
+                    MODEL COMPARISON
+                    ==================================================== -->
+
+                <div class="model-comparison-card">
+
+                    <div class="model-comparison-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                MODEL COMPARISON
+                            </span>
+
+                            <h3>
+                                Classification model performance
+                            </h3>
+
+                            <p>
+                                Comparison of candidate models evaluated
+                                on the same test dataset.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {% if model_comparison %}
+
+                    <div class="comparison-table-wrapper">
+
+                        <table class="comparison-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Model
+                                    </th>
+
+                                    <th>
+                                        Accuracy
+                                    </th>
+
+                                    <th>
+                                        Precision
+                                    </th>
+
+                                    <th>
+                                        Recall
+                                    </th>
+
+                                    <th>
+                                        F1 Score
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for model in model_comparison %}
+
+                                <tr
+                                    {% if model.model == model_metrics.model_name %}
+                                        class="selected-model-row"
+                                    {% endif %}
+                                >
+
+                                    <td>
+
+                                        <div class="comparison-model-name">
+
+                                            <strong>
+                                                {{ model.model }}
+                                            </strong>
+
+
+                                            {% if model.model == model_metrics.model_name %}
+
+                                                <span class="selected-model-badge">
+                                                    Selected
+                                                </span>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        {{ model.accuracy }}%
+                                    </td>
+
+
+                                    <td>
+                                        {{ model.precision }}%
+                                    </td>
+
+
+                                    <td>
+                                        {{ model.recall }}%
+                                    </td>
+
+
+                                    <td>
+                                        {{ model.f1_score }}%
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    {% else %}
+
+                        <div class="comparison-empty">
+
+                            <strong>
+                                No comparison data available
+                            </strong>
+
+                            <span>
+                                Model comparison results could not
+                                be loaded.
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="comparison-note">
+
+                        <strong>
+                            Evaluation note:
+                        </strong>
+
+                        All models are compared using the same
+                        evaluation metrics. Higher values do not
+                        automatically indicate the best model for
+                        every use case.
+
+                    </div>
+
+                </div>
+
+                <!-- ====================================================
+                    APPLICATION PREDICTION ACTIVITY
+                    ==================================================== -->
+
+                <div class="prediction-activity-card">
+
+                    <div class="prediction-activity-header">
+
+                        <div>
+
+                            <span class="card-label">
+                                APPLICATION ACTIVITY
+                            </span>
+
+                            <h3>
+                                Prediction history
+                            </h3>
+
+                            <p>
+                                Summary of predictions made through
+                                the HireWise AI application.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{{ url_for('prediction_history') }}"
+                            class="prediction-history-link"
+                        >
+                            View history
+                        </a>
+
+                    </div>
+
+
+                    <div class="prediction-activity-grid">
+
+                        <!-- TOTAL -->
+
+                        <div class="prediction-activity-stat">
+
+                            <span>
+                                Total predictions
+                            </span>
+
+                            <strong>
+                                {{ history_stats.total }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- LEAVE -->
+
+                        <div class="prediction-activity-stat">
+
+                            <span>
+                                Likely to leave
+                            </span>
+
+                            <strong>
+                                {{ history_stats.likely_to_leave }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- STAY -->
+
+                        <div class="prediction-activity-stat">
+
+                            <span>
+                                Likely to stay
+                            </span>
+
+                            <strong>
+                                {{ history_stats.likely_to_stay }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- HIGH RISK -->
+
+                        <div class="prediction-activity-stat">
+
+                            <span>
+                                High risk
+                            </span>
+
+                            <strong>
+                                {{ history_stats.high_risk }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- AVERAGE -->
+
+                        <div class="prediction-activity-stat">
+
+                            <span>
+                                Average probability
+                            </span>
+
+                            <strong>
+                                {{ history_stats.average_probability }}%
+                            </strong>
+
+                        </div>
 
                     </div>
 

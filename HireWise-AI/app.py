@@ -87,6 +87,308 @@ def get_dataset_statistics():
             )
 
     }
+   
+# ============================================================
+# PREDICTION HISTORY
+# ============================================================
+
+HISTORY_DIR = "data"
+
+HISTORY_PATH = (
+    "data/prediction_history.json"
+)
+
+# ============================================================
+# CREATE HISTORY DIRECTORY
+# ============================================================
+
+os.makedirs(
+    HISTORY_DIR,
+    exist_ok=True
+)
+
+# ============================================================
+# INITIALIZE PREDICTION HISTORY
+# ============================================================
+
+def initialize_prediction_history():
+
+    if not os.path.exists(
+        HISTORY_PATH
+    ):
+
+        with open(
+            HISTORY_PATH,
+            "w",
+            encoding="utf-8"
+        ) as file:
+
+            json.dump(
+                [],
+                file,
+                indent=4
+            )
+            
+initialize_prediction_history()
+
+# ============================================================
+# SAVE PREDICTION TO HISTORY
+# ============================================================
+
+def save_prediction_history(
+    prediction,
+    probability,
+    risk_level,
+    features
+):
+
+    # --------------------------------------------------------
+    # LOAD EXISTING HISTORY
+    # --------------------------------------------------------
+
+    try:
+
+        with open(
+            HISTORY_PATH,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            history = json.load(
+                file
+            )
+
+    except (
+        FileNotFoundError,
+        json.JSONDecodeError
+    ):
+
+        history = []
+
+
+    # --------------------------------------------------------
+    # MAKE SURE HISTORY IS A LIST
+    # --------------------------------------------------------
+
+    if not isinstance(
+        history,
+        list
+    ):
+
+        history = []
+
+
+    # --------------------------------------------------------
+    # CREATE NEW RECORD
+    # --------------------------------------------------------
+
+    record = {
+
+        "timestamp":
+            datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S"
+            ),
+
+        "prediction":
+            str(
+                prediction
+            ),
+
+        "probability":
+            float(
+                probability
+            ),
+
+        "risk_level":
+            str(
+                risk_level
+            ),
+
+        "features":
+            features
+
+    }
+
+
+    # --------------------------------------------------------
+    # ADD RECORD
+    # --------------------------------------------------------
+
+    history.append(
+        record
+    )
+
+
+    # --------------------------------------------------------
+    # SAVE UPDATED HISTORY
+    # --------------------------------------------------------
+
+    with open(
+        HISTORY_PATH,
+        "w",
+        encoding="utf-8"
+    ) as file:
+
+        json.dump(
+            history,
+            file,
+            indent=4,
+            ensure_ascii=False
+        )
+
+
+    return record
+
+# ============================================================
+# PREDICTION HISTORY STATISTICS
+# ============================================================
+
+def get_prediction_history_stats():
+
+    history = load_prediction_history()
+
+    # --------------------------------------------------------
+    # EMPTY HISTORY
+    # --------------------------------------------------------
+
+    if not history:
+
+        return {
+            "total": 0,
+            "likely_to_leave": 0,
+            "likely_to_stay": 0,
+            "high_risk": 0,
+            "average_probability": 0
+        }
+
+
+    # --------------------------------------------------------
+    # BASIC COUNTS
+    # --------------------------------------------------------
+
+    total = len(history)
+
+    likely_to_leave = 0
+    likely_to_stay = 0
+    high_risk = 0
+
+    probabilities = []
+
+
+    # --------------------------------------------------------
+    # PROCESS RECORDS
+    # --------------------------------------------------------
+
+    for item in history:
+
+        prediction = str(
+            item.get(
+                "prediction",
+                ""
+            )
+        ).strip().lower()
+
+
+        risk_level = str(
+            item.get(
+                "risk_level",
+                ""
+            )
+        ).strip().lower()
+
+
+        # ----------------------------------------------------
+        # PREDICTION COUNT
+        # ----------------------------------------------------
+
+        if (
+            "leave" in prediction
+            or
+            "attrition" in prediction
+        ):
+
+            likely_to_leave += 1
+
+        elif "stay" in prediction:
+
+            likely_to_stay += 1
+
+
+        # ----------------------------------------------------
+        # HIGH-RISK COUNT
+        # ----------------------------------------------------
+
+        if risk_level == "high":
+
+            high_risk += 1
+
+
+        # ----------------------------------------------------
+        # PROBABILITY
+        # ----------------------------------------------------
+
+        try:
+
+            probability = float(
+                item.get(
+                    "probability",
+                    0
+                )
+            )
+
+            probabilities.append(
+                probability
+            )
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            continue
+
+
+    # --------------------------------------------------------
+    # AVERAGE PROBABILITY
+    # --------------------------------------------------------
+
+    if probabilities:
+
+        average_probability = (
+            sum(probabilities)
+            / len(probabilities)
+        )
+
+    else:
+
+        average_probability = 0
+
+
+    # --------------------------------------------------------
+    # RETURN STATISTICS
+    # --------------------------------------------------------
+
+    return {
+
+        "total":
+            total,
+
+        "likely_to_leave":
+            likely_to_leave,
+
+        "likely_to_stay":
+            likely_to_stay,
+
+        "high_risk":
+            high_risk,
+
+        "average_probability":
+            round(
+                average_probability * 100,
+                2
+            )
+
+    }
     
 # ============================================================
 # FLASK APP
@@ -478,6 +780,399 @@ except Exception as e:
     model_info = {}
     
 # ============================================================
+# INSPECT MODEL COMPARISON RESULTS
+# ============================================================
+
+print(
+    "Model information keys:"
+)
+
+if isinstance(model_info, dict):
+
+    print(
+        list(model_info.keys())
+    )
+
+else:
+
+    print(
+        "model_info is not a dictionary."
+    )
+    
+# ============================================================
+# CHECK FOR MODEL COMPARISON DATA
+# ============================================================
+
+if isinstance(
+    model_info,
+    dict
+):
+
+    comparison_data = (
+        model_info.get(
+            "model_comparison"
+        )
+    )
+
+    print(
+        "Model comparison data:"
+    )
+
+    print(
+        comparison_data
+    )
+    
+# ============================================================
+# PREPARE MODEL COMPARISON DATA
+# ============================================================
+
+def get_model_comparison():
+
+    comparison_data = None
+
+    if isinstance(model_info, dict):
+
+        comparison_data = (
+            model_info.get(
+                "model_comparison"
+            )
+        )
+
+
+    if not comparison_data:
+
+        return []
+
+
+    records = []
+
+
+    # --------------------------------------------------------
+    # CASE 1: DICTIONARY
+    # --------------------------------------------------------
+
+    if isinstance(
+        comparison_data,
+        dict
+    ):
+
+        for model_name, metrics in (
+            comparison_data.items()
+        ):
+
+            if not isinstance(
+                metrics,
+                dict
+            ):
+
+                continue
+
+
+            records.append({
+
+                "model":
+                    str(model_name),
+
+                "accuracy":
+                    metrics.get(
+                        "accuracy",
+                        0
+                    ),
+
+                "precision":
+                    metrics.get(
+                        "precision",
+                        0
+                    ),
+
+                "recall":
+                    metrics.get(
+                        "recall",
+                        0
+                    ),
+
+                "f1_score":
+                    (
+                        metrics.get(
+                            "f1_score"
+                        )
+
+                        or
+
+                        metrics.get(
+                            "f1",
+                            0
+                        )
+                    )
+
+            })
+
+
+    # --------------------------------------------------------
+    # CASE 2: LIST
+    # --------------------------------------------------------
+
+    elif isinstance(
+        comparison_data,
+        list
+    ):
+
+        for item in comparison_data:
+
+            if not isinstance(
+                item,
+                dict
+            ):
+
+                continue
+
+
+            model_name = (
+
+                item.get(
+                    "model"
+                )
+
+                or
+
+                item.get(
+                    "model_name"
+                )
+
+                or
+
+                item.get(
+                    "name"
+                )
+
+            )
+
+
+            if not model_name:
+
+                continue
+
+
+            records.append({
+
+                "model":
+                    str(model_name),
+
+                "accuracy":
+                    item.get(
+                        "accuracy",
+                        0
+                    ),
+
+                "precision":
+                    item.get(
+                        "precision",
+                        0
+                    ),
+
+                "recall":
+                    item.get(
+                        "recall",
+                        0
+                    ),
+
+                "f1_score":
+                    (
+                        item.get(
+                            "f1_score"
+                        )
+
+                        or
+
+                        item.get(
+                            "f1",
+                            0
+                        )
+                    )
+
+            })
+
+
+    # --------------------------------------------------------
+    # CONVERT VALUES TO PERCENTAGES
+    # --------------------------------------------------------
+
+    def to_percentage(
+        value
+    ):
+
+        try:
+
+            value = float(
+                value
+            )
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            return 0
+
+
+        if value <= 1:
+
+            value *= 100
+
+
+        return round(
+            value,
+            2
+        )
+
+
+    # --------------------------------------------------------
+    # NORMALIZE ALL METRICS
+    # --------------------------------------------------------
+
+    for record in records:
+
+        record["accuracy"] = (
+            to_percentage(
+                record["accuracy"]
+            )
+        )
+
+        record["precision"] = (
+            to_percentage(
+                record["precision"]
+            )
+        )
+
+        record["recall"] = (
+            to_percentage(
+                record["recall"]
+            )
+        )
+
+        record["f1_score"] = (
+            to_percentage(
+                record["f1_score"]
+            )
+        )
+
+
+    return records
+
+# ============================================================
+# MODEL METRIC INTERPRETATION
+# ============================================================
+
+def get_metric_interpretation(
+    metrics
+):
+
+    if not metrics:
+
+        return {
+
+            "accuracy": (
+                "Accuracy information is not available."
+            ),
+
+            "precision": (
+                "Precision information is not available."
+            ),
+
+            "recall": (
+                "Recall information is not available."
+            ),
+
+            "f1_score": (
+                "F1 Score information is not available."
+            )
+
+        }
+
+
+    accuracy = metrics.get(
+        "accuracy",
+        0
+    )
+
+    precision = metrics.get(
+        "precision",
+        0
+    )
+
+    recall = metrics.get(
+        "recall",
+        0
+    )
+
+    f1_score = metrics.get(
+        "f1_score",
+        0
+    )
+
+
+    # --------------------------------------------------------
+    # ACCURACY
+    # --------------------------------------------------------
+
+    accuracy_text = (
+        f"The model correctly classified "
+        f"{accuracy:.2f}% of the observations "
+        f"in the test dataset."
+    )
+
+
+    # --------------------------------------------------------
+    # PRECISION
+    # --------------------------------------------------------
+
+    precision_text = (
+        f"Among observations predicted as "
+        f"attrition, {precision:.2f}% were "
+        f"actually attrition cases in the "
+        f"test dataset."
+    )
+
+
+    # --------------------------------------------------------
+    # RECALL
+    # --------------------------------------------------------
+
+    recall_text = (
+        f"The model identified "
+        f"{recall:.2f}% of the actual attrition "
+        f"cases in the test dataset."
+    )
+
+
+    # --------------------------------------------------------
+    # F1 SCORE
+    # --------------------------------------------------------
+
+    f1_text = (
+        f"The F1 Score is {f1_score:.2f}%, "
+        f"combining precision and recall into "
+        f"a single balanced metric."
+    )
+
+
+    return {
+
+        "accuracy":
+            accuracy_text,
+
+        "precision":
+            precision_text,
+
+        "recall":
+            recall_text,
+
+        "f1_score":
+            f1_text
+
+    }
+    
+# ============================================================
 # PREPARE MODEL EVALUATION METRICS
 # ============================================================
 
@@ -696,24 +1391,10 @@ def get_model_metrics():
     }
     
 # ============================================================
-# PREDICTION HISTORY
+# LOAD PREDICTION HISTORY
 # ============================================================
 
 def load_prediction_history():
-
-    """
-    Load prediction history from JSON.
-
-    Returns an empty list if the file does not
-    exist or cannot be read.
-    """
-
-    if not os.path.exists(
-        HISTORY_PATH
-    ):
-
-        return []
-
 
     try:
 
@@ -727,27 +1408,89 @@ def load_prediction_history():
                 file
             )
 
+    except FileNotFoundError:
 
-        # Make sure the JSON contains a list
+        # History file does not exist yet.
+        initialize_prediction_history()
 
-        if not isinstance(
-            history,
-            list
-        ):
+        return []
 
-            return []
+    except json.JSONDecodeError:
+
+        # History file exists but contains invalid JSON.
+        return []
+
+    except OSError:
+
+        # File cannot be accessed.
+        return []
 
 
-        return history
+    # --------------------------------------------------------
+    # VALIDATE TOP-LEVEL STRUCTURE
+    # --------------------------------------------------------
 
-
-    except (
-        json.JSONDecodeError,
-        OSError
+    if not isinstance(
+        history,
+        list
     ):
 
         return []
 
+
+    # --------------------------------------------------------
+    # KEEP ONLY VALID RECORDS
+    # --------------------------------------------------------
+
+    valid_history = []
+
+
+    for item in history:
+
+        if not isinstance(
+            item,
+            dict
+        ):
+
+            continue
+
+
+        # A usable history record should have
+        # at least a prediction and timestamp.
+
+        if not item.get(
+            "prediction"
+        ):
+
+            continue
+
+
+        if not item.get(
+            "timestamp"
+        ):
+
+            continue
+
+
+        valid_history.append(
+            item
+        )
+
+
+    # --------------------------------------------------------
+    # NEWEST FIRST
+    # --------------------------------------------------------
+
+    valid_history.sort(
+        key=lambda item: item.get(
+            "timestamp",
+            ""
+        ),
+        reverse=True
+    )
+
+
+    return valid_history
 
 # ============================================================
 # SAVE PREDICTION HISTORY
@@ -783,6 +1526,58 @@ def save_prediction_history(
             indent=4
         )
 
+# ============================================================
+# LOAD PREDICTION HISTORY
+# ============================================================
+
+def load_prediction_history():
+
+    try:
+
+        with open(
+            HISTORY_PATH,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            history = json.load(
+                file
+            )
+
+    except (
+        FileNotFoundError,
+        json.JSONDecodeError
+    ):
+
+        return []
+
+
+    # --------------------------------------------------------
+    # MAKE SURE THE DATA IS A LIST
+    # --------------------------------------------------------
+
+    if not isinstance(
+        history,
+        list
+    ):
+
+        return []
+
+
+    # --------------------------------------------------------
+    # NEWEST PREDICTIONS FIRST
+    # --------------------------------------------------------
+
+    history.sort(
+        key=lambda item: item.get(
+            "timestamp",
+            ""
+        ),
+        reverse=True
+    )
+
+
+    return history
 
 # ============================================================
 # HOME PAGE
@@ -1394,6 +2189,15 @@ def get_probability_distribution_data():
 
     history = load_prediction_history()
 
+    if not history:
+        return {
+            "total": 0,
+            "likely_to_leave": 0,
+            "likely_to_stay": 0,
+            "high_risk": 0,
+            "average_probability": 0
+        }
+
     buckets = {
         "0–20%": 0,
         "21–40%": 0,
@@ -1497,6 +2301,20 @@ def analytics():
         get_model_metrics()
     )
     
+    model_comparison = (
+        get_model_comparison()
+    )
+    
+    history_stats = (
+        get_prediction_history_stats()
+    )
+    
+    metric_interpretation = (
+        get_metric_interpretation(
+            model_metrics
+        )
+    )
+    
     return render_template(
 
         "analytics.html",
@@ -1515,7 +2333,13 @@ def analytics():
 
         feature_importance_data=feature_importance_data,
         
-        model_metrics=model_metrics
+        model_metrics=model_metrics,
+        
+        model_comparison=model_comparison,
+        
+        metric_interpretation=metric_interpretation,
+        
+        history_stats=history_stats
 
     )
     
@@ -1867,6 +2691,29 @@ except Exception as e:
 
     dataset = pd.DataFrame()
 
+# ============================================================
+# PREDICTION HISTORY PAGE
+# ============================================================
+
+@app.route("/history")
+def prediction_history():
+
+    history = load_prediction_history()
+
+    history_stats = (
+        get_prediction_history_stats()
+    )
+
+    return render_template(
+
+        "history.html",
+
+        history=history,
+
+        history_stats=history_stats
+
+    )
+    
 # ============================================================
 # RUN APPLICATION
 # ============================================================
