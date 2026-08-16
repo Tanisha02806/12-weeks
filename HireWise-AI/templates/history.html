@@ -27,6 +27,46 @@
 
 <body>
 
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="container navbar-container">
+
+            <a href="/" class="logo">
+                HireWise<span>AI</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="/" class="nav-link">
+                    Home
+                </a>
+
+                <a href="/predict" class="nav-link">
+                    Predict
+                </a>
+
+                <a href="/history" class="nav-link active">
+                    Prediction History
+                </a>
+
+                <a href="/analytics" class="nav-link">
+                    Analytics
+                </a>
+
+            </nav>
+
+            <a href="/predict" class="nav-button">
+                New Analysis
+            </a>
+
+        </div>
+
+    </header>
+
+
+
     <main class="history-page">
 
         <!-- ==================================================
@@ -216,10 +256,7 @@
                                     <td>
 
                                         {{
-                                            (
-                                                item.probability
-                                                * 100
-                                            ) | round(2)
+                                            item.probability | float | round(2)
                                         }}%
 
                                     </td>
@@ -268,8 +305,28 @@
             {% endif %}
         </section>
 
+
+        <div class="history-page-actions">
+
+            <a
+                href="/predict"
+                class="primary-button"
+            >
+                New Prediction
+            </a>
+
+            <a
+                href="/analytics"
+                class="secondary-button"
+            >
+                View Analytics
+            </a>
+
+        </div>
+
     </main>
 
 </body>
 
 </html>
+(.venv) PS C:\Users\LOQ\Downloads\projects\12 week\HireWise-AI>

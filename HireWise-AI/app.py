@@ -1,11 +1,217 @@
 import json
 import os
+import secrets
+import hmac
 from datetime import datetime
+from pathlib import Path
 
 import joblib
 import pandas as pd
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
+
+
+
+# ============================================================
+# JSON / DATA HELPERS
+# ============================================================
+
+def make_json_safe(value):
+    """Convert pandas/numpy values into JSON/template-safe Python values."""
+    if hasattr(value, "item"):
+        try:
+            return value.item()
+        except Exception:
+            pass
+
+    if isinstance(value, dict):
+        return {
+            str(key): make_json_safe(item)
+            for key, item in value.items()
+        }
+
+    if isinstance(value, (list, tuple)):
+        return [
+            make_json_safe(item)
+            for item in value
+        ]
+
+    return value
+
+
+def safe_float(value, default=0.0):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def safe_int(value, default=0):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+# ============================================================
+# HIREWISE AI - APPLICATION INITIALIZATION
+# ============================================================
+
+import glob
+
+
+BASE_DIR = Path(__file__).resolve().parent
+
+# Flask application must exist before any @app.route decorators.
+app = Flask(
+    __name__,
+    template_folder=str(BASE_DIR / "templates"),
+    static_folder=str(BASE_DIR / "static")
+)
+
+# Keep paths independent of the terminal's current working directory.
+DATA_DIR = BASE_DIR / "data"
+MODEL_DIR = BASE_DIR / "model"
+MODELS_DIR = BASE_DIR / "models"
+DATASET_DIR = BASE_DIR / "dataset"
+
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+HISTORY_DIR = str(DATA_DIR)
+HISTORY_PATH = str(DATA_DIR / "prediction_history.json")
+
+DATASET_PATH = str(
+    DATASET_DIR / "hr.csv"
+)
+
+# Primary artifact names used by the project.
+MODEL_PATH = str(MODEL_DIR / "model.pkl")
+PREPROCESSOR_PATH = str(MODEL_DIR / "preprocessor.pkl")
+FEATURE_IMPORTANCE_PATH = str(MODEL_DIR / "feature_importance.pkl")
+MODEL_INFO_PATH = str(MODEL_DIR / "model_info.pkl")
+
+
+def _find_artifact(primary_path, keywords, extensions=(".pkl", ".joblib")):
+    """Find an artifact using the expected path first, then safe fallbacks."""
+    primary = Path(primary_path)
+
+    if primary.is_file():
+        return str(primary)
+
+    search_dirs = [
+        MODEL_DIR,
+        MODELS_DIR,
+        BASE_DIR,
+    ]
+
+    candidates = []
+    for directory in search_dirs:
+        if directory.is_dir():
+            for extension in extensions:
+                candidates.extend(directory.glob(f"*{extension}"))
+
+    keyword_matches = []
+    for candidate in candidates:
+        name = candidate.name.lower()
+        if all(keyword.lower() in name for keyword in keywords):
+            keyword_matches.append(candidate)
+
+    if keyword_matches:
+        keyword_matches.sort(key=lambda p: len(p.name))
+        return str(keyword_matches[0])
+
+    return str(primary)
+
+
+# Fall back to common filenames if the exact training filename differs.
+# Use exact artifact filenames first.
+MODEL_PATH = str(MODEL_DIR / "model.pkl")
+PREPROCESSOR_PATH = str(MODEL_DIR / "preprocessor.pkl")
+FEATURE_IMPORTANCE_PATH = str(MODEL_DIR / "feature_importance.pkl")
+MODEL_INFO_PATH = str(MODEL_DIR / "model_info.pkl")
+
+
+# If model.pkl is not present, look for likely model filenames without
+# accidentally selecting model_info.pkl.
+def _find_model_path():
+    primary = Path(MODEL_PATH)
+    if primary.is_file():
+        return str(primary)
+
+    candidates = []
+    for directory in [MODEL_DIR, MODELS_DIR, BASE_DIR]:
+        if directory.is_dir():
+            for candidate in directory.glob("*.pkl"):
+                name = candidate.name.lower()
+                if (
+                    "model" in name
+                    and "info" not in name
+                    and "feature" not in name
+                    and "preprocess" not in name
+                ):
+                    candidates.append(candidate)
+
+    candidates.sort(key=lambda p: len(p.name))
+    return str(candidates[0]) if candidates else str(primary)
+
+
+MODEL_PATH = _find_model_path()
+
+
+
+def _load_joblib(path, label):
+    try:
+        value = joblib.load(path)
+        print(f"✓ {label} loaded successfully.")
+        return value
+    except Exception as exc:
+        print(f"WARNING: Could not load {label.lower()}.")
+        print(f"Path: {path}")
+        print(exc)
+        return None
+
+
+# These globals are available before any route is called.
+model = _load_joblib(
+    MODEL_PATH,
+    "Trained model"
+)
+
+preprocessor = _load_joblib(
+    PREPROCESSOR_PATH,
+    "Preprocessor"
+)
+
+model_info = _load_joblib(
+    MODEL_INFO_PATH,
+    "Model information"
+)
+
+# Feature importance is loaded by get_feature_importance_data() itself.
+# This variable is provided for compatibility with older code/templates.
+feature_importance = _load_joblib(
+    FEATURE_IMPORTANCE_PATH,
+    "Feature importance"
+)
+
+dataset = pd.DataFrame()
+
+try:
+    dataset = pd.read_csv(DATASET_PATH)
+    print(
+        f"✓ Dataset loaded successfully: "
+        f"{dataset.shape[0]} rows"
+    )
+except Exception as exc:
+    print("\nWARNING: Could not load training dataset.")
+    print(f"Path: {DATASET_PATH}")
+    print(exc)
+
+# ============================================================
+# END APPLICATION INITIALIZATION
+# ============================================================
+
+
+
 
 # ============================================================
 # DATASET STATISTICS
@@ -131,113 +337,6 @@ def initialize_prediction_history():
             
 initialize_prediction_history()
 
-# ============================================================
-# SAVE PREDICTION TO HISTORY
-# ============================================================
-
-def save_prediction_history(
-    prediction,
-    probability,
-    risk_level,
-    features
-):
-
-    # --------------------------------------------------------
-    # LOAD EXISTING HISTORY
-    # --------------------------------------------------------
-
-    try:
-
-        with open(
-            HISTORY_PATH,
-            "r",
-            encoding="utf-8"
-        ) as file:
-
-            history = json.load(
-                file
-            )
-
-    except (
-        FileNotFoundError,
-        json.JSONDecodeError
-    ):
-
-        history = []
-
-
-    # --------------------------------------------------------
-    # MAKE SURE HISTORY IS A LIST
-    # --------------------------------------------------------
-
-    if not isinstance(
-        history,
-        list
-    ):
-
-        history = []
-
-
-    # --------------------------------------------------------
-    # CREATE NEW RECORD
-    # --------------------------------------------------------
-
-    record = {
-
-        "timestamp":
-            datetime.now().strftime(
-                "%Y-%m-%d %H:%M:%S"
-            ),
-
-        "prediction":
-            str(
-                prediction
-            ),
-
-        "probability":
-            float(
-                probability
-            ),
-
-        "risk_level":
-            str(
-                risk_level
-            ),
-
-        "features":
-            features
-
-    }
-
-
-    # --------------------------------------------------------
-    # ADD RECORD
-    # --------------------------------------------------------
-
-    history.append(
-        record
-    )
-
-
-    # --------------------------------------------------------
-    # SAVE UPDATED HISTORY
-    # --------------------------------------------------------
-
-    with open(
-        HISTORY_PATH,
-        "w",
-        encoding="utf-8"
-    ) as file:
-
-        json.dump(
-            history,
-            file,
-            indent=4,
-            ensure_ascii=False
-        )
-
-
-    return record
 
 # ============================================================
 # PREDICTION HISTORY STATISTICS
@@ -247,26 +346,32 @@ def get_prediction_history_stats():
 
     history = load_prediction_history()
 
-    # --------------------------------------------------------
-    # EMPTY HISTORY
-    # --------------------------------------------------------
 
     if not history:
 
         return {
-            "total": 0,
-            "likely_to_leave": 0,
-            "likely_to_stay": 0,
-            "high_risk": 0,
-            "average_probability": 0
+
+            "total":
+                0,
+
+            "likely_to_leave":
+                0,
+
+            "likely_to_stay":
+                0,
+
+            "high_risk":
+                0,
+
+            "average_probability":
+                0
+
         }
 
 
-    # --------------------------------------------------------
-    # BASIC COUNTS
-    # --------------------------------------------------------
-
-    total = len(history)
+    total = len(
+        history
+    )
 
     likely_to_leave = 0
     likely_to_stay = 0
@@ -274,10 +379,6 @@ def get_prediction_history_stats():
 
     probabilities = []
 
-
-    # --------------------------------------------------------
-    # PROCESS RECORDS
-    # --------------------------------------------------------
 
     for item in history:
 
@@ -298,18 +399,23 @@ def get_prediction_history_stats():
 
 
         # ----------------------------------------------------
-        # PREDICTION COUNT
+        # PREDICTION COUNTS
         # ----------------------------------------------------
 
         if (
-            "leave" in prediction
-            or
-            "attrition" in prediction
+            "high attrition risk" in prediction
+            or "likely to leave" in prediction
+            or "attrition" in prediction
+            and "low" not in prediction
         ):
 
             likely_to_leave += 1
 
-        elif "stay" in prediction:
+        elif (
+            "low attrition risk" in prediction
+            or "likely to stay" in prediction
+            or "stay" in prediction
+        ):
 
             likely_to_stay += 1
 
@@ -318,7 +424,10 @@ def get_prediction_history_stats():
         # HIGH-RISK COUNT
         # ----------------------------------------------------
 
-        if risk_level == "high":
+        if (
+            risk_level == "high"
+            or "high attrition risk" in prediction
+        ):
 
             high_risk += 1
 
@@ -336,8 +445,18 @@ def get_prediction_history_stats():
                 )
             )
 
-            probabilities.append(
-                probability
+            # Support both:
+            # 0.72 -> 72%
+            # 72.0 -> 72%
+            if 0 <= probability <= 1:
+                probability *= 100
+
+            probability = max(
+                0,
+                min(
+                    probability,
+                    100
+                )
             )
 
         except (
@@ -348,25 +467,32 @@ def get_prediction_history_stats():
             continue
 
 
-    # --------------------------------------------------------
-    # AVERAGE PROBABILITY
-    # --------------------------------------------------------
-
-    if probabilities:
-
-        average_probability = (
-            sum(probabilities)
-            / len(probabilities)
+        probability = max(
+            0,
+            min(
+                probability,
+                100
+            )
         )
 
-    else:
 
-        average_probability = 0
+        probabilities.append(
+            probability
+        )
 
 
-    # --------------------------------------------------------
-    # RETURN STATISTICS
-    # --------------------------------------------------------
+    average_probability = (
+
+        sum(probabilities)
+        /
+        len(probabilities)
+
+        if probabilities
+
+        else 0
+
+    )
+
 
     return {
 
@@ -384,447 +510,12 @@ def get_prediction_history_stats():
 
         "average_probability":
             round(
-                average_probability * 100,
+                average_probability,
                 2
             )
 
     }
-    
-# ============================================================
-# FLASK APP
-# ============================================================
 
-app = Flask(__name__)
-
-
-# ============================================================
-# FILE PATHS
-# ============================================================
-
-MODEL_PATH = "model/hirewise_model.pkl"
-
-PREPROCESSOR_PATH = "model/preprocessor.pkl"
-
-FEATURE_IMPORTANCE_PATH = "model/feature_importance.pkl"
-
-MODEL_INFO_PATH = "model/model_info.pkl"
-
-HISTORY_PATH = "data/prediction_history.json"
-
-DATASET_PATH = "dataset/WA_Fn-UseC_-HR-Employee-Attrition.csv"
-
-# ============================================================
-# LOAD TRAINED MODEL
-# ============================================================
-
-try:
-
-    model = joblib.load(
-        MODEL_PATH
-    )
-
-    print("✓ Trained model loaded successfully.")
-
-except Exception as e:
-
-    print(
-        "\nERROR: Could not load trained model."
-    )
-
-    print(e)
-
-    model = None
-
-
-# ============================================================
-# LOAD PREPROCESSOR
-# ============================================================
-
-try:
-
-    preprocessor = joblib.load(
-        PREPROCESSOR_PATH
-    )
-
-    print("✓ Preprocessor loaded successfully.")
-
-except Exception as e:
-
-    print(
-        "\nERROR: Could not load preprocessor."
-    )
-
-    print(e)
-
-    preprocessor = None
-
-
-# ============================================================
-# LOAD FEATURE IMPORTANCE
-# ============================================================
-
-try:
-
-    feature_importance = joblib.load(
-        FEATURE_IMPORTANCE_PATH
-    )
-
-    print(
-        "✓ Feature importance loaded successfully."
-    )
-
-    print(
-        "Feature importance type:",
-        type(feature_importance)
-    )
-
-    print(
-        "Feature importance value:"
-    )
-
-    print(
-        feature_importance
-    )
-
-except Exception as e:
-
-    print(
-        "WARNING: Could not load feature importance."
-    )
-
-    print(e)
-
-    feature_importance = None
-    
-# ============================================================
-# PREPARE FEATURE IMPORTANCE FOR ANALYTICS
-# ============================================================
-
-def get_feature_importance_data():
-
-    if feature_importance is None:
-
-        return []
-
-
-    records = []
-
-
-    # --------------------------------------------------------
-    # CASE 1: DICTIONARY
-    # --------------------------------------------------------
-
-    if isinstance(
-        feature_importance,
-        dict
-    ):
-
-        for feature, importance in (
-            feature_importance.items()
-        ):
-
-            try:
-
-                importance_value = float(
-                    importance
-                )
-
-            except (
-                TypeError,
-                ValueError
-            ):
-
-                continue
-
-
-            records.append({
-
-                "feature":
-                    str(feature),
-
-                "importance":
-                    importance_value
-
-            })
-
-
-    # --------------------------------------------------------
-    # CASE 2: LIST
-    # --------------------------------------------------------
-
-    elif isinstance(
-        feature_importance,
-        list
-    ):
-
-        for item in feature_importance:
-
-            # --------------------------------------------
-            # LIST OF DICTIONARIES
-            # --------------------------------------------
-
-            if isinstance(
-                item,
-                dict
-            ):
-
-                feature_name = (
-                    item.get("feature")
-                    or item.get("name")
-                )
-
-                importance_value = (
-                    item.get("importance")
-                )
-
-
-                if (
-                    feature_name is None
-                    or importance_value is None
-                ):
-
-                    continue
-
-
-                try:
-
-                    importance_value = float(
-                        importance_value
-                    )
-
-                except (
-                    TypeError,
-                    ValueError
-                ):
-
-                    continue
-
-
-                records.append({
-
-                    "feature":
-                        str(feature_name),
-
-                    "importance":
-                        importance_value
-
-                })
-
-
-            # --------------------------------------------
-            # LIST OF TUPLES / LISTS
-            # --------------------------------------------
-
-            elif isinstance(
-                item,
-                (
-                    tuple,
-                    list
-                )
-            ):
-
-                if len(item) < 2:
-
-                    continue
-
-
-                feature_name = item[0]
-
-                importance_value = item[1]
-
-
-                try:
-
-                    importance_value = float(
-                        importance_value
-                    )
-
-                except (
-                    TypeError,
-                    ValueError
-                ):
-
-                    continue
-
-
-                records.append({
-
-                    "feature":
-                        str(feature_name),
-
-                    "importance":
-                        importance_value
-
-                })
-
-
-    # --------------------------------------------------------
-    # SORT HIGHEST → LOWEST
-    # --------------------------------------------------------
-
-    records.sort(
-
-        key=lambda item:
-            item["importance"],
-
-        reverse=True
-
-    )
-
-
-    # --------------------------------------------------------
-    # KEEP TOP FEATURES
-    # --------------------------------------------------------
-
-    records = records[:10]
-
-
-    return records
-
-# ============================================================
-# CONVERT FEATURE IMPORTANCE TO RECORDS
-# ============================================================
-
-feature_importance_records = (
-    feature_importance.to_dict(
-        orient="records"
-    )
-)
-
-
-# ============================================================
-# CLEAN FEATURE NAMES
-# ============================================================
-
-for item in feature_importance_records:
-
-    feature_name = item.get(
-        "Display Feature",
-        "Unknown Feature"
-    )
-
-    feature_name = str(
-        feature_name
-    )
-
-    # Remove preprocessing prefixes
-
-    feature_name = feature_name.replace(
-        "num__",
-        ""
-    )
-
-    feature_name = feature_name.replace(
-        "cat__",
-        ""
-    )
-
-    # Replace underscores
-
-    feature_name = feature_name.replace(
-        "_",
-        " "
-    )
-
-    # Make readable
-
-    item["Display Feature"] = (
-        feature_name.title()
-    )
-
-
-print(
-    "\n--- FEATURE IMPORTANCE LOADED ---"
-)
-
-print(
-    feature_importance_records
-)
-
-
-# ============================================================
-# LOAD MODEL INFORMATION
-# ============================================================
-
-try:
-
-    model_info = joblib.load(
-        MODEL_INFO_PATH
-    )
-
-    print(
-        "✓ Model information loaded successfully."
-    )
-
-    print(
-        "Model information type:",
-        type(model_info)
-    )
-    
-    print(
-        "Model information:"
-    )
-    
-    print(
-        model_info
-    )
-
-except Exception as e:
-
-    print(
-        "WARNING: Could not load model information."
-    )
-
-    print(e)
-
-    model_info = {}
-    
-# ============================================================
-# INSPECT MODEL COMPARISON RESULTS
-# ============================================================
-
-print(
-    "Model information keys:"
-)
-
-if isinstance(model_info, dict):
-
-    print(
-        list(model_info.keys())
-    )
-
-else:
-
-    print(
-        "model_info is not a dictionary."
-    )
-    
-# ============================================================
-# CHECK FOR MODEL COMPARISON DATA
-# ============================================================
-
-if isinstance(
-    model_info,
-    dict
-):
-
-    comparison_data = (
-        model_info.get(
-            "model_comparison"
-        )
-    )
-
-    print(
-        "Model comparison data:"
-    )
-
-    print(
-        comparison_data
-    )
-    
-# ============================================================
-# PREPARE MODEL COMPARISON DATA
-# ============================================================
 
 def get_model_comparison():
 
@@ -1067,7 +758,7 @@ def get_metric_interpretation(
     metrics
 ):
 
-    if not metrics:
+    if not isinstance(metrics, dict) or not metrics:
 
         return {
 
@@ -1501,18 +1192,16 @@ def save_prediction_history(
 ):
 
     """
-    Save prediction history to JSON.
+    Save the complete prediction-history list to JSON.
     """
 
-    # Make sure data directory exists
-
     os.makedirs(
-        os.path.dirname(
-            HISTORY_PATH
-        ),
+        os.path.dirname(HISTORY_PATH),
         exist_ok=True
     )
 
+    if not isinstance(history, list):
+        history = []
 
     with open(
         HISTORY_PATH,
@@ -1523,61 +1212,328 @@ def save_prediction_history(
         json.dump(
             history,
             file,
-            indent=4
+            indent=4,
+            ensure_ascii=False
         )
 
+
 # ============================================================
-# LOAD PREDICTION HISTORY
+# PREPARE FEATURE IMPORTANCE FOR ANALYTICS
 # ============================================================
 
-def load_prediction_history():
+def get_feature_importance_data():
 
     try:
 
-        with open(
-            HISTORY_PATH,
-            "r",
-            encoding="utf-8"
-        ) as file:
+        loaded_feature_importance = joblib.load(
+            FEATURE_IMPORTANCE_PATH
+        )
 
-            history = json.load(
-                file
-            )
+    except Exception as e:
 
-    except (
-        FileNotFoundError,
-        json.JSONDecodeError
-    ):
+        print(
+            "WARNING: Could not load feature importance."
+        )
+
+        print(e)
 
         return []
 
 
-    # --------------------------------------------------------
-    # MAKE SURE THE DATA IS A LIST
-    # --------------------------------------------------------
+    records = []
 
-    if not isinstance(
-        history,
+
+    # ========================================================
+    # CASE 1: PANDAS DATAFRAME
+    # ========================================================
+
+    if isinstance(
+        loaded_feature_importance,
+        pd.DataFrame
+    ):
+
+        dataframe = loaded_feature_importance.copy()
+
+
+        # Find feature-name column
+
+        feature_column = None
+
+        for column in [
+            "Display Feature",
+            "feature",
+            "Feature",
+            "name"
+        ]:
+
+            if column in dataframe.columns:
+
+                feature_column = column
+
+                break
+
+
+        # Find importance column
+
+        importance_column = None
+
+        for column in [
+            "Importance",
+            "importance",
+            "Importance Score",
+            "importance_score"
+        ]:
+
+            if column in dataframe.columns:
+
+                importance_column = column
+
+                break
+
+
+        if (
+            feature_column is not None
+            and
+            importance_column is not None
+        ):
+
+            for _, row in dataframe.iterrows():
+
+                try:
+
+                    importance_value = float(
+                        row[importance_column]
+                    )
+
+                except (
+                    TypeError,
+                    ValueError
+                ):
+
+                    continue
+
+
+                records.append({
+
+                    "feature":
+                        str(
+                            row[feature_column]
+                        ),
+
+                    "importance":
+                        importance_value
+
+                })
+
+
+    # ========================================================
+    # CASE 2: DICTIONARY
+    # ========================================================
+
+    elif isinstance(
+        loaded_feature_importance,
+        dict
+    ):
+
+        for feature, importance in (
+            loaded_feature_importance.items()
+        ):
+
+            try:
+
+                importance_value = float(
+                    importance
+                )
+
+            except (
+                TypeError,
+                ValueError
+            ):
+
+                continue
+
+
+            records.append({
+
+                "feature":
+                    str(feature),
+
+                "importance":
+                    importance_value
+
+            })
+
+
+    # ========================================================
+    # CASE 3: LIST
+    # ========================================================
+
+    elif isinstance(
+        loaded_feature_importance,
         list
     ):
 
-        return []
+        for item in loaded_feature_importance:
+
+            if not isinstance(
+                item,
+                dict
+            ):
+
+                continue
 
 
-    # --------------------------------------------------------
-    # NEWEST PREDICTIONS FIRST
-    # --------------------------------------------------------
+            feature_name = (
 
-    history.sort(
-        key=lambda item: item.get(
-            "timestamp",
-            ""
-        ),
+                item.get(
+                    "feature"
+                )
+
+                or
+
+                item.get(
+                    "Display Feature"
+                )
+
+                or
+
+                item.get(
+                    "name"
+                )
+
+            )
+
+
+            importance_value = (
+
+                item.get(
+                    "importance"
+                )
+
+                if item.get(
+                    "importance"
+                ) is not None
+
+                else
+
+                item.get(
+                    "Importance"
+                )
+
+            )
+
+
+            if (
+                feature_name is None
+                or
+                importance_value is None
+            ):
+
+                continue
+
+
+            try:
+
+                importance_value = float(
+                    importance_value
+                )
+
+            except (
+                TypeError,
+                ValueError
+            ):
+
+                continue
+
+
+            records.append({
+
+                "feature":
+                    str(feature_name),
+
+                "importance":
+                    importance_value
+
+            })
+
+
+    # ========================================================
+    # SORT
+    # ========================================================
+
+    records.sort(
+
+        key=lambda item:
+            item["importance"],
+
         reverse=True
+
     )
 
 
-    return history
+    # ========================================================
+    # TOP 10
+    # ========================================================
+
+    records = records[:10]
+
+
+    # ========================================================
+    # CREATE DISPLAY NAMES
+    # ========================================================
+
+    cleaned_records = []
+
+
+    for item in records:
+
+        raw_name = str(
+            item.get(
+                "feature",
+                "Unknown Feature"
+            )
+        )
+
+
+        display_name = raw_name.replace(
+            "num__",
+            ""
+        )
+
+
+        display_name = display_name.replace(
+            "cat__",
+            ""
+        )
+
+
+        display_name = display_name.replace(
+            "_",
+            " "
+        )
+
+
+        display_name = display_name.strip().title()
+
+
+        cleaned_records.append({
+
+            "feature":
+                raw_name,
+
+            "importance":
+                item["importance"],
+
+            "Display Feature":
+                display_name,
+
+            "Importance":
+                item["importance"]
+
+        })
+
+
+    return cleaned_records
 
 # ============================================================
 # HOME PAGE
@@ -1590,6 +1546,68 @@ def home():
         "index.html"
     )
 
+
+
+# ============================================================
+# PREDICTION INPUT VALIDATION
+# ============================================================
+
+def validate_prediction_inputs(
+    age,
+    monthly_income,
+    num_companies_worked
+):
+    """Centralized validation used by the prediction endpoint."""
+    errors = []
+
+    if age < 18 or age > 70:
+        errors.append("Age must be between 18 and 70.")
+
+    if monthly_income < 100:
+        errors.append("Monthly income must be at least 100.")
+
+    if num_companies_worked < 0 or num_companies_worked > 20:
+        errors.append(
+            "Number of companies worked must be between 0 and 20."
+        )
+
+    return errors
+
+
+def get_risk_level(probability):
+    """Return a consistent risk label from an attrition probability."""
+    probability = safe_float(probability)
+
+    if probability >= 70:
+        return "High"
+
+    if probability >= 40:
+        return "Medium"
+
+    return "Low"
+
+
+def get_risk_message(probability):
+    """Return the user-facing interpretation for a prediction."""
+    probability = safe_float(probability)
+
+    if probability >= 70:
+        return (
+            "The model estimates a high probability of employee "
+            "attrition based on the submitted characteristics."
+        )
+
+    if probability >= 40:
+        return (
+            "The model estimates a moderate probability of employee "
+            "attrition. The result should be reviewed alongside other "
+            "employee information."
+        )
+
+    return (
+        "The model estimates a relatively low probability of employee "
+        "attrition based on the submitted characteristics."
+    )
 
 # ============================================================
 # PREDICTION PAGE
@@ -1879,9 +1897,6 @@ def predict():
                     "%Y-%m-%d %H:%M:%S"
                 ),
 
-            "job_role":
-                job_role,
-
             "prediction":
                 result,
 
@@ -1891,10 +1906,45 @@ def predict():
                     2
                 ),
 
+            "risk_level":
+                (
+                    "High"
+                    if result == "High Attrition Risk"
+                    else "Low"
+                ),
+
+            "job_role":
+                job_role,
+
+            "features":
+                {
+                    key: (
+                        value.item()
+                        if hasattr(
+                            value,
+                            "item"
+                        )
+                        else value
+                    )
+                    for key, value in (
+                        employee_data
+                        .iloc[0]
+                        .to_dict()
+                        .items()
+                    )
+                },
+
             "model":
-                model_info.get(
-                    "model_name",
-                    "Classification Model"
+                (
+                    model_info.get(
+                        "model_name",
+                        "Classification Model"
+                    )
+                    if isinstance(
+                        model_info,
+                        dict
+                    )
+                    else "Classification Model"
                 )
 
         }
@@ -1987,32 +2037,17 @@ def predict():
                 "Unable to process the prediction. "
                 "Please check the entered information "
                 "and try again."
+            ),
+
+            form_data=(
+                request.form.to_dict()
+                if request.method == "POST"
+                else {}
             )
 
         )
 
 
-# ============================================================
-# PREDICTION HISTORY PAGE
-# ============================================================
-
-@app.route(
-    "/prediction-history"
-)
-def prediction_history():
-
-    history = (
-        load_prediction_history()
-    )
-
-
-    return render_template(
-
-        "history.html",
-
-        history=history
-
-    )
     
 # ============================================================
 # PREDICTION STATISTICS
@@ -2191,11 +2226,14 @@ def get_probability_distribution_data():
 
     if not history:
         return {
-            "total": 0,
-            "likely_to_leave": 0,
-            "likely_to_stay": 0,
-            "high_risk": 0,
-            "average_probability": 0
+            "labels": [
+                "0–20%",
+                "21–40%",
+                "41–60%",
+                "61–80%",
+                "81–100%"
+            ],
+            "values": [0, 0, 0, 0, 0]
         }
 
     buckets = {
@@ -2349,243 +2387,157 @@ def analytics():
 
 def get_attrition_insights():
 
+    empty_result = {
+
+        "overtime": [],
+        "job_satisfaction": [],
+        "business_travel": [],
+        "work_life_balance": [],
+
+        "overtime_highest": {
+            "label": "N/A",
+            "rate": 0
+        },
+
+        "job_satisfaction_highest": {
+            "label": "N/A",
+            "rate": 0
+        },
+
+        "business_travel_highest": {
+            "label": "N/A",
+            "rate": 0
+        },
+
+        "work_life_balance_highest": {
+            "label": "N/A",
+            "rate": 0
+        }
+
+    }
+
+
     if dataset.empty:
 
-        # ========================================================
-        # FIND HIGHEST OBSERVED RATE
-        # ========================================================
+        return empty_result
 
-        def get_highest_rate(
-            items
+
+    # --------------------------------------------------------
+    # HELPER: BUILD GROUP ATTRITION RATES
+    # --------------------------------------------------------
+
+    def build_insights(
+        column
+    ):
+
+        if (
+            column not in dataset.columns
+            or "attrition" not in dataset.columns
         ):
 
-            if not items:
-
-                return {
-                    "label": "N/A",
-                    "rate": 0
-                }
+            return []
 
 
-            highest = max(
-                items,
-                key=lambda item:
-                    item["rate"]
+        grouped = (
+            dataset
+            .groupby(column)["attrition"]
+            .apply(
+                lambda values:
+                (
+                    values.astype(str).str.strip().eq("Yes")
+                ).mean() * 100
             )
+            .reset_index()
+        )
 
 
-            return {
+        results = []
+
+        for _, row in grouped.iterrows():
+
+            results.append({
 
                 "label":
-                    highest["label"],
+                    str(
+                        row[column]
+                    ),
 
                 "rate":
-                    highest["rate"]
+                    round(
+                        float(
+                            row["attrition"]
+                        ),
+                        2
+                    )
 
+            })
+
+
+        return results
+
+
+    # --------------------------------------------------------
+    # BUILD ALL INSIGHTS
+    # --------------------------------------------------------
+
+    overtime_insights = build_insights(
+        "over_time"
+    )
+
+    satisfaction_insights = build_insights(
+        "job_satisfaction"
+    )
+
+    travel_insights = build_insights(
+        "business_travel"
+    )
+
+    work_life_insights = build_insights(
+        "work_life_balance"
+    )
+
+
+    # --------------------------------------------------------
+    # HELPER: HIGHEST RATE
+    # --------------------------------------------------------
+
+    def get_highest_rate(
+        items
+    ):
+
+        if not items:
+
+            return {
+                "label": "N/A",
+                "rate": 0
             }
 
 
-        # ========================================================
-        # RETURN INSIGHTS
-        # ========================================================
+        highest = max(
+            items,
+            key=lambda item:
+                item.get(
+                    "rate",
+                    0
+                )
+        )
+
 
         return {
 
-            "overtime":
-                overtime_insights,
-
-            "job_satisfaction":
-                satisfaction_insights,
-
-            "business_travel":
-                travel_insights,
-
-            "work_life_balance":
-                work_life_insights,
-
-            "overtime_highest":
-                get_highest_rate(
-                    overtime_insights
+            "label":
+                highest.get(
+                    "label",
+                    "N/A"
                 ),
 
-            "job_satisfaction_highest":
-                get_highest_rate(
-                    satisfaction_insights
-                ),
-
-            "business_travel_highest":
-                get_highest_rate(
-                    travel_insights
-                ),
-
-            "work_life_balance_highest":
-                get_highest_rate(
-                    work_life_insights
+            "rate":
+                highest.get(
+                    "rate",
+                    0
                 )
 
         }
-
-
-    # --------------------------------------------------------
-    # OVERTIME
-    # --------------------------------------------------------
-
-    overtime_data = (
-        dataset
-        .groupby("over_time")["attrition"]
-        .apply(
-            lambda values:
-            (
-                values == "Yes"
-            ).mean() * 100
-        )
-        .reset_index()
-    )
-
-
-    overtime_insights = []
-
-    for _, row in overtime_data.iterrows():
-
-        overtime_insights.append({
-
-            "label":
-                str(
-                    row["over_time"]
-                ),
-
-            "rate":
-                round(
-                    float(
-                        row["attrition"]
-                    ),
-                    2
-                )
-
-        })
-
-
-    # --------------------------------------------------------
-    # JOB SATISFACTION
-    # --------------------------------------------------------
-
-    satisfaction_data = (
-        dataset
-        .groupby(
-            "job_satisfaction"
-        )["attrition"]
-        .apply(
-            lambda values:
-            (
-                values == "Yes"
-            ).mean() * 100
-        )
-        .reset_index()
-    )
-
-
-    satisfaction_insights = []
-
-    for _, row in satisfaction_data.iterrows():
-
-        satisfaction_insights.append({
-
-            "label":
-                str(
-                    row["job_satisfaction"]
-                ),
-
-            "rate":
-                round(
-                    float(
-                        row["attrition"]
-                    ),
-                    2
-                )
-
-        })
-
-
-    # --------------------------------------------------------
-    # BUSINESS TRAVEL
-    # --------------------------------------------------------
-
-    travel_data = (
-        dataset
-        .groupby(
-            "business_travel"
-        )["attrition"]
-        .apply(
-            lambda values:
-            (
-                values == "Yes"
-            ).mean() * 100
-        )
-        .reset_index()
-    )
-
-
-    travel_insights = []
-
-    for _, row in travel_data.iterrows():
-
-        travel_insights.append({
-
-            "label":
-                str(
-                    row["business_travel"]
-                ),
-
-            "rate":
-                round(
-                    float(
-                        row["attrition"]
-                    ),
-                    2
-                )
-
-        })
-
-
-    # --------------------------------------------------------
-    # WORK-LIFE BALANCE
-    # --------------------------------------------------------
-
-    work_life_data = (
-        dataset
-        .groupby(
-            "work_life_balance"
-        )["attrition"]
-        .apply(
-            lambda values:
-            (
-                values == "Yes"
-            ).mean() * 100
-        )
-        .reset_index()
-    )
-
-
-    work_life_insights = []
-
-    for _, row in work_life_data.iterrows():
-
-        work_life_insights.append({
-
-            "label":
-                str(
-                    row["work_life_balance"]
-                ),
-
-            "rate":
-                round(
-                    float(
-                        row["attrition"]
-                    ),
-                    2
-                )
-
-        })
 
 
     return {
@@ -2600,10 +2552,31 @@ def get_attrition_insights():
             travel_insights,
 
         "work_life_balance":
-            work_life_insights
+            work_life_insights,
+
+        "overtime_highest":
+            get_highest_rate(
+                overtime_insights
+            ),
+
+        "job_satisfaction_highest":
+            get_highest_rate(
+                satisfaction_insights
+            ),
+
+        "business_travel_highest":
+            get_highest_rate(
+                travel_insights
+            ),
+
+        "work_life_balance_highest":
+            get_highest_rate(
+                work_life_insights
+            )
 
     }
-    
+
+
 # ============================================================
 # ATTRITION INSIGHT SUMMARY
 # ============================================================
@@ -2667,31 +2640,6 @@ def get_attrition_insight_summary(
     return summary
 
 # ============================================================
-# LOAD TRAINING DATASET
-# ============================================================
-
-try:
-
-    dataset = pd.read_csv(
-        DATASET_PATH
-    )
-
-    print(
-        f"✓ Dataset loaded successfully: "
-        f"{dataset.shape[0]} rows"
-    )
-
-except Exception as e:
-
-    print(
-        "\nWARNING: Could not load training dataset."
-    )
-
-    print(e)
-
-    dataset = pd.DataFrame()
-
-# ============================================================
 # PREDICTION HISTORY PAGE
 # ============================================================
 
@@ -2714,12 +2662,260 @@ def prediction_history():
 
     )
     
+
+
+# ============================================================
+# APPLICATION STATUS / HEALTH CHECK
+# ============================================================
+
+@app.route("/status")
+def application_status():
+
+    return {
+        "status": "ok",
+        "model_loaded": model is not None,
+        "preprocessor_loaded": preprocessor is not None,
+        "model_info_loaded": isinstance(model_info, dict),
+        "feature_importance_loaded": bool(
+            get_feature_importance_data()
+        ),
+        "dataset_loaded": not dataset.empty,
+        "history_records": len(
+            load_prediction_history()
+        )
+    }
+
+
+# ============================================================
+# PREDICTION HISTORY API
+# ============================================================
+
+@app.route("/api/prediction-history")
+def prediction_history_api():
+
+    history = load_prediction_history()
+
+    return {
+        "count": len(history),
+        "history": make_json_safe(history)
+    }
+
+
+# ============================================================
+# MODEL INFORMATION API
+# ============================================================
+
+@app.route("/api/model-info")
+def model_info_api():
+
+    return {
+        "model_info": make_json_safe(
+            model_info
+            if isinstance(model_info, dict)
+            else {}
+        ),
+        "feature_importance": make_json_safe(
+            get_feature_importance_data()
+        ),
+        "model_comparison": make_json_safe(
+            get_model_comparison()
+        )
+    }
+
+
+
+# ============================================================
+# APPLICATION ERROR HANDLERS
+# ============================================================
+
+@app.errorhandler(404)
+def handle_404(error):
+
+    return render_template(
+        "404.html",
+        error="The requested page could not be found."
+    ), 404
+
+
+@app.errorhandler(500)
+def handle_500(error):
+
+    # Log the exception server-side, but never expose its details to users.
+    print("APPLICATION ERROR:")
+    print(type(error).__name__)
+    print(str(error))
+
+    return render_template(
+        "error.html",
+        error=(
+            "Something went wrong while processing your request. "
+            "Please try again."
+        )
+    ), 500
+
+
+
+
+# ============================================================
+# SECURITY CONFIGURATION — 5.12
+# ============================================================
+
+# Secret key must be supplied through the environment in production.
+# A development fallback keeps local coursework execution working.
+SECRET_KEY = os.environ.get(
+    "HIREWISE_SECRET_KEY",
+    "hirewise-development-secret-change-before-production"
+)
+
+app.config["SECRET_KEY"] = SECRET_KEY
+
+# Limit request body size to reduce accidental/abusive oversized requests.
+app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024
+
+# Safer browser cookie defaults.
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = (
+    os.environ.get(
+        "HIREWISE_COOKIE_SECURE",
+        "0"
+    ).lower()
+    in ("1", "true", "yes")
+)
+
+
+def _get_csrf_token():
+    """Create/retrieve a per-session CSRF token."""
+    token = session.get("_csrf_token")
+
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session["_csrf_token"] = token
+
+    return token
+
+
+@app.context_processor
+def inject_security_helpers():
+    return {
+        "csrf_token": _get_csrf_token
+    }
+
+
+@app.before_request
+def protect_prediction_post():
+    """Protect the prediction form against cross-site POST requests."""
+    if (
+        request.method == "POST"
+        and request.path == "/predict"
+    ):
+
+        expected = session.get(
+            "_csrf_token"
+        )
+
+        supplied = request.form.get(
+            "_csrf_token",
+            ""
+        )
+
+        if (
+            not expected
+            or not supplied
+            or not hmac.compare_digest(
+                str(expected),
+                str(supplied)
+            )
+        ):
+
+            return render_template(
+                "predict.html",
+                error=(
+                    "Your form session has expired or "
+                    "the security token is invalid. "
+                    "Please refresh the page and try again."
+                ),
+                form_data=request.form.to_dict()
+            ), 400
+
+
+@app.after_request
+def add_security_headers(response):
+    """Add baseline browser security headers."""
+    response.headers.setdefault(
+        "X-Content-Type-Options",
+        "nosniff"
+    )
+
+    response.headers.setdefault(
+        "X-Frame-Options",
+        "SAMEORIGIN"
+    )
+
+    response.headers.setdefault(
+        "Referrer-Policy",
+        "strict-origin-when-cross-origin"
+    )
+
+    response.headers.setdefault(
+        "Permissions-Policy",
+        "camera=(), microphone=(), geolocation=()"
+    )
+
+    response.headers.setdefault(
+        "Content-Security-Policy",
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' "
+        "https://cdn.jsdelivr.net https://fonts.googleapis.com; "
+        "style-src 'self' 'unsafe-inline' "
+        "https://fonts.googleapis.com; "
+        "font-src 'self' https://fonts.gstatic.com; "
+        "img-src 'self' data:; "
+        "connect-src 'self'; "
+        "frame-ancestors 'self'; "
+        "base-uri 'self'; "
+        "form-action 'self'"
+    )
+
+    return response
+
+
+# ============================================================
+# APPLICATION CONFIGURATION
+# ============================================================
+
+APP_ENV = os.environ.get(
+    "HIREWISE_ENV",
+    "development"
+)
+
+# Debug is explicitly controlled by environment rather than
+# being hard-coded for future deployment.
+DEBUG_MODE = (
+    os.environ.get(
+        "HIREWISE_DEBUG",
+        "0"
+    ).lower()
+    in ("1", "true", "yes")
+)
+
+# ============================================================
+# STARTUP SUMMARY
+# ============================================================
+
+print("\n--- HIREWISE AI STARTUP CHECK ---")
+print(f"Model path: {MODEL_PATH}")
+print(f"Preprocessor path: {PREPROCESSOR_PATH}")
+print(f"Feature importance path: {FEATURE_IMPORTANCE_PATH}")
+print(f"Model info path: {MODEL_INFO_PATH}")
+print(f"Dataset path: {DATASET_PATH}")
+print(f"History path: {HISTORY_PATH}")
+print("---------------------------------\n")
+
 # ============================================================
 # RUN APPLICATION
 # ============================================================
 
 if __name__ == "__main__":
 
-    app.run(
-        debug=True
-    )
+    app.run(debug=DEBUG_MODE)

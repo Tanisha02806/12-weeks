@@ -100,10 +100,10 @@
 
 
                 <a
-                    href="/prediction-history"
+                    href="/history"
                     class="nav-link"
                 >
-                    History
+                    Prediction History
                 </a>
 
 
@@ -114,13 +114,6 @@
                     Analytics
                 </a>
 
-
-                <a
-                    href="#"
-                    class="nav-link"
-                >
-                    About
-                </a>
 
             </nav>
 
@@ -1432,12 +1425,23 @@
                         </div>
 
 
-                        <a
-                            href="{{ url_for('prediction_history') }}"
-                            class="prediction-history-link"
-                        >
-                            View history
-                        </a>
+                        <div class="prediction-activity-actions">
+
+                            <a
+                                href="/history"
+                                class="prediction-history-link"
+                            >
+                                View history
+                            </a>
+
+                            <a
+                                href="/predict"
+                                class="prediction-history-link"
+                            >
+                                New prediction
+                            </a>
+
+                        </div>
 
                     </div>
 

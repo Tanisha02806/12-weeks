@@ -156,6 +156,27 @@
                 </div>
 
 
+                {% if error %}
+
+                <div
+                    class="server-error"
+                    role="alert"
+                    aria-live="polite"
+                >
+
+                    <strong>
+                        Prediction could not be completed
+                    </strong>
+
+                    <span>
+                        {{ error }}
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
 
                 <!-- ================= FORM ================= -->
 
@@ -164,7 +185,14 @@
                     id="candidate-form"
                     method="POST"
                     action="/predict"
+                    novalidate
                 >
+
+                    <input
+                        type="hidden"
+                        name="_csrf_token"
+                        value="{{ csrf_token() }}"
+                    >
 
 
                     <!-- ================= SECTION 01 ================= -->
@@ -210,6 +238,7 @@
                                 <input
                                     type="number"
                                     id="age"
+                    value="{{ form_data.get('age', '') if form_data else '' }}"
                                     name="age"
                                     placeholder="e.g. 29"
                                     min="18"
@@ -276,15 +305,15 @@
                                         Select travel frequency
                                     </option>
 
-                                    <option value="Travel_Rarely">
+                                    <option value="Travel_Rarely" {% if form_data and form_data.get("business_travel") == "Travel_Rarely" %}selected{% endif %}>
                                         Travel Rarely
                                     </option>
 
-                                    <option value="Travel_Frequently">
+                                    <option value="Travel_Frequently" {% if form_data and form_data.get("business_travel") == "Travel_Frequently" %}selected{% endif %}>
                                         Travel Frequently
                                     </option>
 
-                                    <option value="Non-Travel">
+                                    <option value="Non-Travel" {% if form_data and form_data.get("business_travel") == "Non-Travel" %}selected{% endif %}>
                                         Non-Travel
                                     </option>
 
@@ -313,39 +342,39 @@
                                         Select job role
                                     </option>
 
-                                    <option value="Sales Executive">
+                                    <option value="Sales Executive" {% if form_data and form_data.get("job_role") == "Sales Executive" %}selected{% endif %}>
                                         Sales Executive
                                     </option>
 
-                                    <option value="Research Scientist">
+                                    <option value="Research Scientist" {% if form_data and form_data.get("job_role") == "Research Scientist" %}selected{% endif %}>
                                         Research Scientist
                                     </option>
 
-                                    <option value="Laboratory Technician">
+                                    <option value="Laboratory Technician" {% if form_data and form_data.get("job_role") == "Laboratory Technician" %}selected{% endif %}>
                                         Laboratory Technician
                                     </option>
 
-                                    <option value="Manufacturing Director">
+                                    <option value="Manufacturing Director" {% if form_data and form_data.get("job_role") == "Manufacturing Director" %}selected{% endif %}>
                                         Manufacturing Director
                                     </option>
 
-                                    <option value="Healthcare Representative">
+                                    <option value="Healthcare Representative" {% if form_data and form_data.get("job_role") == "Healthcare Representative" %}selected{% endif %}>
                                         Healthcare Representative
                                     </option>
 
-                                    <option value="Manager">
+                                    <option value="Manager" {% if form_data and form_data.get("job_role") == "Manager" %}selected{% endif %}>
                                         Manager
                                     </option>
 
-                                    <option value="Sales Representative">
+                                    <option value="Sales Representative" {% if form_data and form_data.get("job_role") == "Sales Representative" %}selected{% endif %}>
                                         Sales Representative
                                     </option>
 
-                                    <option value="Research Director">
+                                    <option value="Research Director" {% if form_data and form_data.get("job_role") == "Research Director" %}selected{% endif %}>
                                         Research Director
                                     </option>
 
-                                    <option value="Human Resources">
+                                    <option value="Human Resources" {% if form_data and form_data.get("job_role") == "Human Resources" %}selected{% endif %}>
                                         Human Resources
                                     </option>
 
@@ -403,6 +432,7 @@
                                 <input
                                     type="number"
                                     id="monthly-income"
+                    value="{{ form_data.get('monthly_income', '') if form_data else '' }}"
                                     name="monthly_income"
                                     placeholder="e.g. 4500"
                                     min="100"
@@ -425,6 +455,7 @@
                                 <input
                                     type="number"
                                     id="num-companies-worked"
+                    value="{{ form_data.get('num_companies_worked', '') if form_data else '' }}"
                                     name="num_companies_worked"
                                     placeholder="e.g. 2"
                                     min="0"
@@ -491,11 +522,11 @@
                                         Select overtime status
                                     </option>
 
-                                    <option value="Yes">
+                                    <option value="Yes" {% if form_data and form_data.get("over_time") == "Yes" %}selected{% endif %}>
                                         Yes
                                     </option>
 
-                                    <option value="No">
+                                    <option value="No" {% if form_data and form_data.get("over_time") == "No" %}selected{% endif %}>
                                         No
                                     </option>
 
@@ -524,19 +555,19 @@
                                         Select satisfaction level
                                     </option>
 
-                                    <option value="Low">
+                                    <option value="Low" {% if form_data and form_data.get("job_satisfaction") == "Low" %}selected{% endif %}>
                                         Low
                                     </option>
 
-                                    <option value="Medium">
+                                    <option value="Medium" {% if form_data and form_data.get("job_satisfaction") == "Medium" %}selected{% endif %}>
                                         Medium
                                     </option>
 
-                                    <option value="High">
+                                    <option value="High" {% if form_data and form_data.get("job_satisfaction") == "High" %}selected{% endif %}>
                                         High
                                     </option>
 
-                                    <option value="Very High">
+                                    <option value="Very High" {% if form_data and form_data.get("job_satisfaction") == "Very High" %}selected{% endif %}>
                                         Very High
                                     </option>
 
@@ -565,19 +596,19 @@
                                         Select satisfaction level
                                     </option>
 
-                                    <option value="Low">
+                                    <option value="Low" {% if form_data and form_data.get("environment_satisfaction") == "Low" %}selected{% endif %}>
                                         Low
                                     </option>
 
-                                    <option value="Medium">
+                                    <option value="Medium" {% if form_data and form_data.get("environment_satisfaction") == "Medium" %}selected{% endif %}>
                                         Medium
                                     </option>
 
-                                    <option value="High">
+                                    <option value="High" {% if form_data and form_data.get("environment_satisfaction") == "High" %}selected{% endif %}>
                                         High
                                     </option>
 
-                                    <option value="Very high">
+                                    <option value="Very high" {% if form_data and form_data.get("environment_satisfaction") == "Very high" %}selected{% endif %}>
                                         Very high
                                     </option>
 
@@ -606,19 +637,19 @@
                                         Select balance level
                                     </option>
 
-                                    <option value="Bad">
+                                    <option value="Bad" {% if form_data and form_data.get("work_life_balance") == "Bad" %}selected{% endif %}>
                                         Bad
                                     </option>
 
-                                    <option value="Better">
+                                    <option value="Better" {% if form_data and form_data.get("work_life_balance") == "Better" %}selected{% endif %}>
                                         Better
                                     </option>
 
-                                    <option value="Good">
+                                    <option value="Good" {% if form_data and form_data.get("work_life_balance") == "Good" %}selected{% endif %}>
                                         Good
                                     </option>
 
-                                    <option value="Best">
+                                    <option value="Best" {% if form_data and form_data.get("work_life_balance") == "Best" %}selected{% endif %}>
                                         Best
                                     </option>
 

@@ -574,3 +574,2602 @@ a {
     }
 
 }
+
+/* ============================================================
+   5.13.1 — GLOBAL TYPOGRAPHY & SPACING
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   GLOBAL TEXT RENDERING
+   ------------------------------------------------------------ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ------------------------------------------------------------
+   HEADINGS
+   ------------------------------------------------------------ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+
+    font-family:
+        "Poppins",
+        "Inter",
+        sans-serif;
+
+    letter-spacing: -0.02em;
+
+    line-height: 1.2;
+}
+
+
+/* Main page headings */
+
+h1 {
+    font-size: clamp(
+        2rem,
+        4vw,
+        3.2rem
+    );
+
+    line-height: 1.12;
+
+    margin-bottom: 18px;
+}
+
+
+/* Section headings */
+
+h2 {
+    font-size: clamp(
+        1.45rem,
+        2.5vw,
+        2rem
+    );
+
+    line-height: 1.25;
+
+    margin-bottom: 12px;
+}
+
+
+/* Card headings */
+
+h3 {
+    font-size: 1.15rem;
+
+    line-height: 1.35;
+
+    margin-bottom: 8px;
+}
+
+
+h4 {
+    font-size: 1rem;
+
+    line-height: 1.4;
+}
+
+
+/* ------------------------------------------------------------
+   PARAGRAPHS
+   ------------------------------------------------------------ */
+
+p {
+    margin-top: 0;
+
+    line-height: 1.65;
+}
+
+
+/* Improve readability of descriptive text */
+
+.hero-content p,
+.analytics-heading p,
+.dataset-overview p,
+.insights-heading p,
+.analytics-card p,
+.model-performance-card p,
+.prediction-activity-card p {
+    max-width: 720px;
+}
+
+
+/* ------------------------------------------------------------
+   SMALL LABELS
+   ------------------------------------------------------------ */
+
+.section-label,
+.card-label {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+    line-height: 1.4;
+
+    text-transform: uppercase;
+}
+
+
+/* ------------------------------------------------------------
+   CONSISTENT SECTION SPACING
+   ------------------------------------------------------------ */
+
+section {
+    scroll-margin-top: 90px;
+}
+
+
+/* Common content blocks */
+
+.analytics-heading,
+.dataset-overview-header,
+.insights-heading,
+.analytics-card-header {
+    margin-bottom: 24px;
+}
+
+
+/* ------------------------------------------------------------
+   CONTAINER
+   ------------------------------------------------------------ */
+
+.container {
+    width: min(
+        calc(100% - 40px),
+        1200px
+    );
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* ------------------------------------------------------------
+   BUTTON TYPOGRAPHY
+   ------------------------------------------------------------ */
+
+button,
+.primary-button,
+.secondary-button,
+.nav-button {
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.01em;
+}
+
+
+/* ------------------------------------------------------------
+   FORM TYPOGRAPHY
+   ------------------------------------------------------------ */
+
+input,
+select,
+textarea {
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size: 0.9rem;
+
+    line-height: 1.4;
+}
+
+
+label {
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+
+/* ------------------------------------------------------------
+   NAVIGATION TYPOGRAPHY
+   ------------------------------------------------------------ */
+
+.nav-link {
+    font-size: 0.88rem;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+
+.logo {
+    font-family:
+        "Poppins",
+        "Inter",
+        sans-serif;
+
+    font-weight: 700;
+
+    letter-spacing: -0.03em;
+}
+
+
+/* ------------------------------------------------------------
+   CARD CONTENT
+   ------------------------------------------------------------ */
+
+.analytics-stat-card,
+.dataset-stat,
+.insight-card,
+.analytics-card,
+.model-performance-card,
+.model-comparison-card,
+.prediction-activity-card {
+    line-height: 1.5;
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE TYPOGRAPHY
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: min(
+            calc(100% - 28px),
+            1200px
+        );
+    }
+
+
+    h1 {
+        font-size: clamp(
+            1.8rem,
+            8vw,
+            2.5rem
+        );
+
+        margin-bottom: 14px;
+    }
+
+
+    h2 {
+        font-size: 1.45rem;
+    }
+
+
+    h3 {
+        font-size: 1.05rem;
+    }
+
+
+    p {
+        line-height: 1.6;
+    }
+
+
+    .section-label,
+    .card-label {
+        font-size: 0.68rem;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   VERY SMALL SCREENS
+   ------------------------------------------------------------ */
+
+@media (max-width: 480px) {
+
+    .container {
+        width: calc(100% - 24px);
+    }
+
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+
+    .section-label,
+    .card-label {
+        font-size: 0.64rem;
+
+        letter-spacing: 0.08em;
+    }
+
+}
+
+/* ============================================================
+   5.13.2 — BUTTONS & INTERACTIVE STATES
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   GLOBAL INTERACTION TRANSITIONS
+   ------------------------------------------------------------ */
+
+button,
+a,
+input,
+select,
+textarea {
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+/* ------------------------------------------------------------
+   PRIMARY BUTTONS
+   ------------------------------------------------------------ */
+
+.primary-button {
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 11px 20px;
+
+    border: 1px solid transparent;
+
+    border-radius: 10px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+
+.primary-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(
+            0,
+            0,
+            0,
+            0.10
+        );
+}
+
+
+.primary-button:active {
+    transform: translateY(0);
+
+    box-shadow:
+        0 3px 8px rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+}
+
+
+/* ------------------------------------------------------------
+   SECONDARY BUTTONS
+   ------------------------------------------------------------ */
+
+.secondary-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 10px 19px;
+
+    border-radius: 10px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+
+.secondary-button:hover {
+    transform: translateY(-1px);
+}
+
+
+.secondary-button:active {
+    transform: translateY(0);
+}
+
+
+/* ------------------------------------------------------------
+   NAVIGATION BUTTON
+   ------------------------------------------------------------ */
+
+.nav-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+
+    padding: 9px 17px;
+
+    border-radius: 9px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+
+.nav-button:hover {
+    transform: translateY(-1px);
+}
+
+
+.nav-button:active {
+    transform: translateY(0);
+}
+
+
+/* ------------------------------------------------------------
+   NAVIGATION LINKS
+   ------------------------------------------------------------ */
+
+.nav-link {
+    position: relative;
+
+    text-decoration: none;
+
+    opacity: 0.78;
+}
+
+
+.nav-link:hover {
+    opacity: 1;
+}
+
+
+.nav-link.active {
+    opacity: 1;
+}
+
+
+/* Small active-page indicator */
+
+.nav-link.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: -7px;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    transform: translateX(-50%);
+}
+
+
+/* ------------------------------------------------------------
+   BUTTON FOCUS — ACCESSIBILITY
+   ------------------------------------------------------------ */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(
+        37,
+        99,
+        235,
+        0.25
+    );
+
+    outline-offset: 2px;
+}
+
+
+/* ------------------------------------------------------------
+   DISABLED BUTTONS
+   ------------------------------------------------------------ */
+
+button:disabled,
+button[aria-disabled="true"],
+.primary-button[aria-disabled="true"],
+.secondary-button[aria-disabled="true"] {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none !important;
+
+    box-shadow: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   LOADING BUTTON
+   ------------------------------------------------------------ */
+
+button.is-loading {
+    pointer-events: none;
+
+    cursor: wait;
+
+    transform: none;
+}
+
+
+button.is-loading .submit-spinner {
+    flex-shrink: 0;
+}
+
+
+/* ------------------------------------------------------------
+   FORM CONTROLS
+   ------------------------------------------------------------ */
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: currentColor;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+}
+
+
+/* ------------------------------------------------------------
+   CLICKABLE CARDS
+   ------------------------------------------------------------ */
+
+a.analytics-card,
+a.insight-card,
+a.model-performance-card {
+    text-decoration: none;
+}
+
+
+a.analytics-card:hover,
+a.insight-card:hover,
+a.model-performance-card:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ------------------------------------------------------------
+   ICON / TEXT BUTTONS
+   ------------------------------------------------------------ */
+
+.icon-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+
+.icon-button:hover {
+    background: rgba(
+        0,
+        0,
+        0,
+        0.05
+    );
+}
+
+
+.icon-button:active {
+    transform: scale(0.96);
+}
+
+
+/* ------------------------------------------------------------
+   TOUCH DEVICES
+   ------------------------------------------------------------ */
+
+@media (hover: none) {
+
+    .primary-button:hover,
+    .secondary-button:hover,
+    .nav-button:hover,
+    .icon-button:hover {
+        transform: none;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE BUTTONS
+   ------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+
+    .primary-button,
+    .secondary-button,
+    .nav-button {
+        min-height: 44px;
+    }
+
+
+    .primary-button,
+    .secondary-button {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+}
+
+/* ============================================================
+   5.13.3 — CARDS, BORDERS & SHADOWS
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   DESIGN TOKENS
+   ------------------------------------------------------------ */
+
+:root {
+    --card-radius: 14px;
+
+    --card-border:
+        rgba(0, 0, 0, 0.08);
+
+    --card-shadow:
+        0 4px 18px rgba(
+            0,
+            0,
+            0,
+            0.05
+        );
+
+    --card-shadow-hover:
+        0 10px 28px rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+}
+
+
+/* ------------------------------------------------------------
+   COMMON CARD FOUNDATION
+   ------------------------------------------------------------ */
+
+.analytics-stat-card,
+.dataset-stat,
+.insight-card,
+.analytics-card,
+.model-performance-card,
+.model-comparison-card,
+.prediction-activity-card,
+.result-card,
+.employee-details,
+.feature-importance-card,
+.model-info-card {
+    border-radius: var(--card-radius);
+
+    border: 1px solid var(--card-border);
+
+    box-shadow: var(--card-shadow);
+}
+
+
+/* ------------------------------------------------------------
+   CARD HOVER
+   ------------------------------------------------------------ */
+
+.analytics-stat-card:hover,
+.dataset-stat:hover,
+.insight-card:hover,
+.analytics-card:hover,
+.model-performance-card:hover,
+.model-comparison-card:hover,
+.prediction-activity-card:hover {
+    box-shadow: var(--card-shadow-hover);
+
+    transform: translateY(-2px);
+}
+
+
+/* ------------------------------------------------------------
+   STAT CARDS
+   ------------------------------------------------------------ */
+
+.analytics-stat-card,
+.dataset-stat {
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* Small visual accent */
+
+.analytics-stat-card::before,
+.dataset-stat::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    opacity: 0.75;
+}
+
+
+/* ------------------------------------------------------------
+   INSIGHT CARDS
+   ------------------------------------------------------------ */
+
+.insight-card {
+    position: relative;
+
+    padding: 20px;
+}
+
+
+.insight-card:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ------------------------------------------------------------
+   ANALYTICS CARDS
+   ------------------------------------------------------------ */
+
+.analytics-card {
+    overflow: hidden;
+}
+
+
+.analytics-card-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+}
+
+
+/* ------------------------------------------------------------
+   MODEL CARDS
+   ------------------------------------------------------------ */
+
+.model-performance-card,
+.model-comparison-card {
+    overflow: hidden;
+}
+
+
+.model-performance-card:hover,
+.model-comparison-card:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ------------------------------------------------------------
+   RESULT CARDS
+   ------------------------------------------------------------ */
+
+.result-card {
+    overflow: hidden;
+
+    padding: 28px;
+}
+
+
+.result-card.high-risk {
+    border-color:
+        rgba(
+            220,
+            38,
+            38,
+            0.20
+        );
+}
+
+
+.result-card.low-risk {
+    border-color:
+        rgba(
+            22,
+            163,
+            74,
+            0.20
+        );
+}
+
+
+/* ------------------------------------------------------------
+   PREDICTION HISTORY
+   ------------------------------------------------------------ */
+
+.prediction-activity-card {
+    overflow: hidden;
+}
+
+
+.prediction-activity-card:hover {
+    transform: translateY(-1px);
+}
+
+
+/* ------------------------------------------------------------
+   TABLE CONTAINERS
+   ------------------------------------------------------------ */
+
+.table-container,
+.history-table-container {
+    overflow-x: auto;
+
+    border:
+        1px solid var(--card-border);
+
+    border-radius: var(--card-radius);
+
+    box-shadow: var(--card-shadow);
+}
+
+
+/* ------------------------------------------------------------
+   SEPARATORS
+   ------------------------------------------------------------ */
+
+.card-divider {
+    width: 100%;
+
+    height: 1px;
+
+    margin: 18px 0;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.07
+        );
+}
+
+
+/* ------------------------------------------------------------
+   EMPTY / PLACEHOLDER CARDS
+   ------------------------------------------------------------ */
+
+.empty-state,
+.no-data,
+.placeholder-card {
+    border:
+        1px dashed
+        rgba(
+            0,
+            0,
+            0,
+            0.15
+        );
+
+    border-radius: var(--card-radius);
+
+    box-shadow: none;
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIVE CARD SPACING
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+    .result-card {
+        padding: 22px;
+    }
+
+
+    .insight-card {
+        padding: 17px;
+    }
+
+
+    .analytics-card-header {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   SMALL MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 480px) {
+
+    .result-card {
+        padding: 18px;
+    }
+
+
+    .insight-card {
+        padding: 15px;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .analytics-stat-card,
+    .dataset-stat,
+    .insight-card,
+    .analytics-card,
+    .model-performance-card,
+    .model-comparison-card,
+    .prediction-activity-card {
+        transition: none !important;
+    }
+
+
+    .analytics-stat-card:hover,
+    .dataset-stat:hover,
+    .insight-card:hover,
+    .analytics-card:hover,
+    .model-performance-card:hover,
+    .model-comparison-card:hover,
+    .prediction-activity-card:hover {
+        transform: none;
+    }
+
+}
+
+/* ============================================================
+   5.13.4 — RESPONSIVE / MOBILE LAYOUT
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   GLOBAL RESPONSIVE SAFETY
+   ------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* ------------------------------------------------------------
+   CONTAINER
+   ------------------------------------------------------------ */
+
+.container {
+    width: min(
+        calc(100% - 40px),
+        1200px
+    );
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* ------------------------------------------------------------
+   NAVIGATION
+   ------------------------------------------------------------ */
+
+.navbar-container {
+    min-width: 0;
+}
+
+.nav-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 24px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ------------------------------------------------------------
+   TABLET
+   ------------------------------------------------------------ */
+
+@media (max-width: 1024px) {
+
+    .container {
+        width: min(
+            calc(100% - 32px),
+            960px
+        );
+    }
+
+
+    .nav-links {
+        gap: 17px;
+    }
+
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+
+    .analytics-grid,
+    .stats-grid,
+    .insights-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+
+    .model-comparison-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE — 768px
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: calc(100% - 28px);
+    }
+
+
+    /* ---------------- NAVBAR ---------------- */
+
+    .navbar-container {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 14px;
+    }
+
+
+    .logo {
+        flex-shrink: 0;
+    }
+
+
+    .nav-links {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+
+        gap: 14px;
+
+        padding-top: 8px;
+    }
+
+
+    .nav-button {
+        margin-left: auto;
+    }
+
+
+    .nav-link {
+        font-size: 0.82rem;
+    }
+
+
+    /* ---------------- HERO ---------------- */
+
+    .hero {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+
+    .hero-content {
+        width: 100%;
+    }
+
+
+    .hero-actions {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
+
+
+    /* ---------------- GRIDS ---------------- */
+
+    .analytics-grid,
+    .stats-grid,
+    .insights-grid,
+    .model-comparison-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    /* ---------------- TWO COLUMN LAYOUTS ---------------- */
+
+    .analytics-layout,
+    .dashboard-grid,
+    .content-grid,
+    .result-layout {
+        grid-template-columns:
+            1fr !important;
+    }
+
+
+    /* ---------------- CARDS ---------------- */
+
+    .analytics-stat-card,
+    .dataset-stat,
+    .insight-card,
+    .analytics-card,
+    .model-performance-card,
+    .model-comparison-card,
+    .prediction-activity-card,
+    .result-card {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    /* ---------------- FORMS ---------------- */
+
+    .form-grid,
+    .form-row {
+        grid-template-columns:
+            1fr !important;
+    }
+
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+
+        max-width: 100%;
+    }
+
+
+    /* ---------------- BUTTONS ---------------- */
+
+    .hero-actions,
+    .result-actions,
+    .history-page-actions {
+        width: 100%;
+    }
+
+
+    .hero-actions .primary-button,
+    .hero-actions .secondary-button,
+    .result-actions .primary-button,
+    .result-actions .secondary-button,
+    .history-page-actions .primary-button,
+    .history-page-actions .secondary-button {
+        flex: 1 1 auto;
+    }
+
+
+    /* ---------------- TABLES ---------------- */
+
+    .table-container,
+    .history-table-container {
+        width: 100%;
+
+        overflow-x: auto;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    table {
+        min-width: 650px;
+    }
+
+
+    /* ---------------- CHARTS ---------------- */
+
+    .chart-container,
+    .chart-wrapper {
+        width: 100%;
+
+        max-width: 100%;
+
+        overflow: hidden;
+    }
+
+
+    canvas {
+        max-width: 100% !important;
+    }
+
+
+    /* ---------------- FOOTER ---------------- */
+
+    .footer-container,
+    .footer-content {
+        flex-direction: column;
+
+        text-align: center;
+
+        gap: 14px;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   SMALL MOBILE — 480px
+   ------------------------------------------------------------ */
+
+@media (max-width: 480px) {
+
+    .container {
+        width: calc(100% - 24px);
+    }
+
+
+    /* ---------------- NAVBAR ---------------- */
+
+    .navbar-container {
+        justify-content: center;
+
+        text-align: center;
+    }
+
+
+    .logo {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    .nav-button {
+        margin-left: 0;
+
+        width: 100%;
+    }
+
+
+    .nav-links {
+        gap: 10px 14px;
+    }
+
+
+    /* ---------------- HERO ---------------- */
+
+    .hero {
+        padding-top: 36px;
+        padding-bottom: 36px;
+    }
+
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+
+    .hero-actions a {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    /* ---------------- FORM ---------------- */
+
+    .form-section {
+        padding: 18px;
+    }
+
+
+    .form-group {
+        width: 100%;
+    }
+
+
+    /* ---------------- RESULT ---------------- */
+
+    .result-card {
+        padding: 18px;
+    }
+
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+
+    .result-actions a,
+    .result-actions button {
+        width: 100%;
+    }
+
+
+    /* ---------------- HISTORY ---------------- */
+
+    .history-page-actions {
+        flex-direction: column;
+    }
+
+
+    .history-page-actions a {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    /* ---------------- CARDS ---------------- */
+
+    .analytics-stat-card,
+    .dataset-stat,
+    .insight-card {
+        padding: 16px;
+    }
+
+
+    /* ---------------- TYPOGRAPHY ---------------- */
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+
+    h3 {
+        font-size: 1.05rem;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   VERY SMALL DEVICES — 360px
+   ------------------------------------------------------------ */
+
+@media (max-width: 360px) {
+
+    .container {
+        width: calc(100% - 20px);
+    }
+
+
+    .nav-links {
+        gap: 8px 10px;
+    }
+
+
+    .nav-link {
+        font-size: 0.76rem;
+    }
+
+
+    .nav-button {
+        font-size: 0.82rem;
+    }
+
+
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+
+
+    .probability {
+        font-size: 2rem;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   LANDSCAPE MOBILE
+   ------------------------------------------------------------ */
+
+@media (
+    max-width: 900px
+) and (
+    orientation: landscape
+) {
+
+    .hero {
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+
+    .nav-links {
+        gap: 12px;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+}
+
+/* ============================================================
+   5.13.5 — EMPTY STATES & ERROR STATES
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   BASE EMPTY / ERROR STATE
+   ------------------------------------------------------------ */
+
+.empty-state,
+.error-state,
+.no-data,
+.placeholder-card {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-height: 180px;
+
+    padding: 32px 24px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    border-radius: 14px;
+
+    border: 1px dashed rgba(
+        0,
+        0,
+        0,
+        0.14
+    );
+
+    background: rgba(
+        0,
+        0,
+        0,
+        0.02
+    );
+}
+
+
+/* ------------------------------------------------------------
+   EMPTY STATE TITLE
+   ------------------------------------------------------------ */
+
+.empty-state h3,
+.error-state h3,
+.no-data h3,
+.placeholder-card h3 {
+    margin: 0 0 8px;
+
+    font-size: 1.05rem;
+
+    font-weight: 650;
+}
+
+
+/* ------------------------------------------------------------
+   EMPTY STATE DESCRIPTION
+   ------------------------------------------------------------ */
+
+.empty-state p,
+.error-state p,
+.no-data p,
+.placeholder-card p {
+    max-width: 520px;
+
+    margin: 0 0 18px;
+
+    font-size: 0.88rem;
+
+    line-height: 1.6;
+
+    opacity: 0.68;
+}
+
+
+/* ------------------------------------------------------------
+   EMPTY STATE ICON
+   ------------------------------------------------------------ */
+
+.empty-state-icon,
+.error-state-icon {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    margin-bottom: 16px;
+
+    border-radius: 50%;
+
+    background: rgba(
+        0,
+        0,
+        0,
+        0.06
+    );
+
+    font-size: 1.25rem;
+}
+
+
+/* ------------------------------------------------------------
+   SERVER ERROR
+   ------------------------------------------------------------ */
+
+.server-error,
+.form-error {
+    border-left: 4px solid #dc2626;
+}
+
+
+/* ------------------------------------------------------------
+   ERROR STATE
+   ------------------------------------------------------------ */
+
+.error-state {
+    border-color: rgba(
+        220,
+        38,
+        38,
+        0.25
+    );
+
+    background: rgba(
+        220,
+        38,
+        38,
+        0.04
+    );
+}
+
+
+.error-state-icon {
+    background: rgba(
+        220,
+        38,
+        38,
+        0.10
+    );
+}
+
+
+/* ------------------------------------------------------------
+   WARNING STATE
+   ------------------------------------------------------------ */
+
+.warning-state {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    padding: 16px 18px;
+
+    border: 1px solid rgba(
+        234,
+        179,
+        8,
+        0.25
+    );
+
+    border-radius: 12px;
+
+    background: rgba(
+        234,
+        179,
+        8,
+        0.06
+    );
+}
+
+
+.warning-state strong {
+    display: block;
+
+    margin-bottom: 4px;
+}
+
+
+.warning-state p {
+    margin: 0;
+
+    font-size: 0.84rem;
+
+    line-height: 1.5;
+
+    opacity: 0.72;
+}
+
+
+/* ------------------------------------------------------------
+   SUCCESS STATE
+   ------------------------------------------------------------ */
+
+.success-state {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    padding: 16px 18px;
+
+    border: 1px solid rgba(
+        22,
+        163,
+        74,
+        0.25
+    );
+
+    border-radius: 12px;
+
+    background: rgba(
+        22,
+        163,
+        74,
+        0.06
+    );
+}
+
+
+.success-state strong {
+    display: block;
+
+    margin-bottom: 4px;
+}
+
+
+.success-state p {
+    margin: 0;
+
+    font-size: 0.84rem;
+
+    line-height: 1.5;
+
+    opacity: 0.72;
+}
+
+
+/* ------------------------------------------------------------
+   HISTORY EMPTY STATE
+   ------------------------------------------------------------ */
+
+.history-empty {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 260px;
+
+    padding: 32px 20px;
+
+    text-align: center;
+}
+
+
+.history-empty h3 {
+    margin-bottom: 8px;
+}
+
+
+.history-empty p {
+    max-width: 480px;
+
+    margin-bottom: 20px;
+
+    opacity: 0.65;
+
+    line-height: 1.6;
+}
+
+
+/* ------------------------------------------------------------
+   ANALYTICS NO-DATA STATE
+   ------------------------------------------------------------ */
+
+.analytics-empty {
+    min-height: 220px;
+}
+
+
+/* ------------------------------------------------------------
+   RETRY / ACTION AREA
+   ------------------------------------------------------------ */
+
+.state-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 4px;
+}
+
+
+/* ------------------------------------------------------------
+   404 / 500 PAGE
+   ------------------------------------------------------------ */
+
+.error-page {
+    min-height: 70vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 60px 20px;
+}
+
+
+.error-page-content {
+    width: min(
+        100%,
+        620px
+    );
+
+    text-align: center;
+}
+
+
+.error-page-code {
+    margin-bottom: 8px;
+
+    font-size: clamp(
+        4rem,
+        12vw,
+        7rem
+    );
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: -0.06em;
+
+    opacity: 0.12;
+}
+
+
+.error-page h1 {
+    margin-bottom: 12px;
+}
+
+
+.error-page p {
+    margin: 0 auto 24px;
+
+    max-width: 500px;
+
+    opacity: 0.65;
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+
+    .empty-state,
+    .error-state,
+    .no-data,
+    .placeholder-card {
+        min-height: 160px;
+
+        padding: 24px 18px;
+    }
+
+
+    .state-actions {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+
+    .state-actions a,
+    .state-actions button {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    .error-page {
+        min-height: 65vh;
+
+        padding: 40px 16px;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .empty-state,
+    .error-state,
+    .no-data,
+    .placeholder-card {
+        transition: none;
+    }
+
+}
+
+/* ============================================================
+   5.13.6 — ACCESSIBILITY POLISH
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   KEYBOARD FOCUS
+   ------------------------------------------------------------ */
+
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(
+        37,
+        99,
+        235,
+        0.35
+    );
+
+    outline-offset: 3px;
+
+    border-radius: 5px;
+}
+
+
+/* ------------------------------------------------------------
+   LINKS
+   ------------------------------------------------------------ */
+
+a:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+
+/* ------------------------------------------------------------
+   FORM CONTROLS
+   ------------------------------------------------------------ */
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(
+        37,
+        99,
+        235,
+        0.22
+    );
+
+    outline-offset: 1px;
+}
+
+
+/* ------------------------------------------------------------
+   INVALID FORM FIELDS
+   ------------------------------------------------------------ */
+
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: #dc2626;
+}
+
+
+input[aria-invalid="true"]:focus-visible,
+select[aria-invalid="true"]:focus-visible,
+textarea[aria-invalid="true"]:focus-visible {
+    outline-color: rgba(
+        220,
+        38,
+        38,
+        0.30
+    );
+}
+
+
+/* ------------------------------------------------------------
+   DISABLED CONTROLS
+   ------------------------------------------------------------ */
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+    cursor: not-allowed;
+}
+
+
+/* ------------------------------------------------------------
+   SCREEN-READER ONLY CONTENT
+   ------------------------------------------------------------ */
+
+.sr-only {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(
+        0,
+        0,
+        0,
+        0
+    );
+
+    white-space: nowrap;
+
+    border: 0;
+}
+
+
+/* ------------------------------------------------------------
+   SKIP LINK
+   ------------------------------------------------------------ */
+
+.skip-link {
+    position: fixed;
+
+    top: 10px;
+    left: 10px;
+
+    z-index: 9999;
+
+    padding: 10px 14px;
+
+    border-radius: 8px;
+
+    transform: translateY(
+        -150%
+    );
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+
+/* ------------------------------------------------------------
+   ERROR / STATUS MESSAGES
+   ------------------------------------------------------------ */
+
+[role="alert"],
+[role="status"] {
+    overflow-wrap: anywhere;
+}
+
+
+/* ------------------------------------------------------------
+   TABLE ACCESSIBILITY
+   ------------------------------------------------------------ */
+
+table {
+    border-collapse: collapse;
+}
+
+
+th {
+    font-weight: 700;
+}
+
+
+th,
+td {
+    vertical-align: middle;
+}
+
+
+/* ------------------------------------------------------------
+   CLICK TARGETS
+   ------------------------------------------------------------ */
+
+button,
+.nav-link,
+.nav-button,
+.primary-button,
+.secondary-button {
+    min-height: 40px;
+}
+
+
+/* ------------------------------------------------------------
+   MOTION PREFERENCE
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   HIGH CONTRAST SUPPORT
+   ------------------------------------------------------------ */
+
+@media (forced-colors: active) {
+
+    button,
+    a,
+    input,
+    select,
+    textarea {
+        forced-color-adjust: auto;
+    }
+
+
+    :focus-visible {
+        outline: 2px solid CanvasText;
+    }
+
+}
+
+/* ============================================================
+   5.13.7 — FINAL VISUAL CONSISTENCY PASS
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   GLOBAL DESIGN TOKENS
+   ------------------------------------------------------------ */
+
+:root {
+
+    --hirewise-radius-sm: 8px;
+    --hirewise-radius-md: 12px;
+    --hirewise-radius-lg: 14px;
+
+    --hirewise-space-1: 4px;
+    --hirewise-space-2: 8px;
+    --hirewise-space-3: 12px;
+    --hirewise-space-4: 16px;
+    --hirewise-space-5: 20px;
+    --hirewise-space-6: 24px;
+    --hirewise-space-7: 32px;
+    --hirewise-space-8: 40px;
+
+    --hirewise-border:
+        rgba(0, 0, 0, 0.08);
+
+    --hirewise-shadow:
+        0 4px 18px rgba(
+            0,
+            0,
+            0,
+            0.05
+        );
+
+}
+
+
+/* ------------------------------------------------------------
+   COMMON SECTION RHYTHM
+   ------------------------------------------------------------ */
+
+main > section {
+    margin-bottom: 48px;
+}
+
+
+main > section:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ------------------------------------------------------------
+   COMMON CARD ALIGNMENT
+   ------------------------------------------------------------ */
+
+.analytics-stat-card,
+.dataset-stat,
+.insight-card,
+.analytics-card,
+.model-performance-card,
+.model-comparison-card,
+.prediction-activity-card,
+.result-card {
+
+    border-radius:
+        var(--hirewise-radius-lg);
+
+    border:
+        1px solid
+        var(--hirewise-border);
+
+    box-shadow:
+        var(--hirewise-shadow);
+
+}
+
+
+/* ------------------------------------------------------------
+   COMMON CARD HEADINGS
+   ------------------------------------------------------------ */
+
+.analytics-card-header,
+.dataset-overview-header,
+.insights-heading,
+.analytics-heading {
+
+    margin-bottom:
+        var(--hirewise-space-6);
+
+}
+
+
+.analytics-card-header h2,
+.analytics-card-header h3,
+.dataset-overview-header h2,
+.insights-heading h2,
+.analytics-heading h1,
+.analytics-heading h2 {
+
+    margin-bottom:
+        var(--hirewise-space-2);
+
+}
+
+
+/* ------------------------------------------------------------
+   COMMON BUTTON GROUPS
+   ------------------------------------------------------------ */
+
+.hero-actions,
+.result-actions,
+.history-page-actions,
+.state-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap:
+        var(--hirewise-space-3);
+
+}
+
+
+/* ------------------------------------------------------------
+   CONSISTENT FORM GROUP SPACING
+   ------------------------------------------------------------ */
+
+.form-group {
+
+    margin-bottom:
+        var(--hirewise-space-5);
+
+}
+
+
+.form-group:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+/* ------------------------------------------------------------
+   CONSISTENT LABEL SPACING
+   ------------------------------------------------------------ */
+
+label {
+
+    display: inline-block;
+
+    margin-bottom:
+        var(--hirewise-space-2);
+
+}
+
+
+/* ------------------------------------------------------------
+   CONSISTENT FORM CONTROLS
+   ------------------------------------------------------------ */
+
+input,
+select,
+textarea {
+
+    min-height: 42px;
+
+    border-radius:
+        var(--hirewise-radius-sm);
+
+}
+
+
+/* ------------------------------------------------------------
+   CONSISTENT TABLE CELLS
+   ------------------------------------------------------------ */
+
+th,
+td {
+
+    padding:
+        12px 14px;
+
+}
+
+
+th {
+
+    white-space: nowrap;
+
+}
+
+
+/* ------------------------------------------------------------
+   RESULT PAGE CONSISTENCY
+   ------------------------------------------------------------ */
+
+.result-card {
+
+    max-width:
+        900px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+
+.result-probability-bar {
+
+    border-radius:
+        999px;
+
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIBLE USE NOTICE
+   ------------------------------------------------------------ */
+
+.result-responsible-use {
+
+    border-radius:
+        var(--hirewise-radius-md);
+
+    border:
+        1px solid
+        var(--hirewise-border);
+
+}
+
+
+/* ------------------------------------------------------------
+   HISTORY ACTIONS
+   ------------------------------------------------------------ */
+
+.history-page-actions {
+
+    justify-content:
+        center;
+
+    margin-top:
+        var(--hirewise-space-6);
+
+}
+
+
+/* ------------------------------------------------------------
+   ANALYTICS ACTIONS
+   ------------------------------------------------------------ */
+
+.prediction-activity-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap:
+        var(--hirewise-space-3);
+
+}
+
+
+/* ------------------------------------------------------------
+   CONSISTENT EMPTY STATES
+   ------------------------------------------------------------ */
+
+.empty-state,
+.error-state,
+.no-data,
+.placeholder-card {
+
+    border-radius:
+        var(--hirewise-radius-lg);
+
+}
+
+
+/* ------------------------------------------------------------
+   FOOTER CONSISTENCY
+   ------------------------------------------------------------ */
+
+footer {
+
+    margin-top:
+        56px;
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE CONSISTENCY
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+    main > section {
+
+        margin-bottom:
+            36px;
+
+    }
+
+
+    .hero-actions,
+    .result-actions,
+    .history-page-actions {
+
+        gap:
+            var(--hirewise-space-2);
+
+    }
+
+
+    .prediction-activity-actions {
+
+        width: 100%;
+
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    main > section {
+
+        margin-bottom:
+            28px;
+
+    }
+
+
+    .hero-actions,
+    .result-actions,
+    .history-page-actions,
+    .prediction-activity-actions {
+
+        flex-direction:
+            column;
+
+        align-items:
+        stretch;
+
+    }
+
+
+    .hero-actions a,
+    .result-actions a,
+    .history-page-actions a,
+    .prediction-activity-actions a {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   FINAL MOTION RULE
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        transition:
+            none !important;
+
+        animation:
+            none !important;
+
+    }
+
+}
